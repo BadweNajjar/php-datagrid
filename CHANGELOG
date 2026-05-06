@@ -1,8 +1,32 @@
-﻿======================================================================================
---- Version 8.6.x
 ======================================================================================
+--- Version 8.6.x (CodeIgniter 4 fork)
+======================================================================================
+1. Feature: [added] PSR-4 namespace `DataGrid\*` under `datagrid/src/`
+2. Feature: [added] native CodeIgniter 4 database layer integration
+                    (`\Config\Database::connect()` auto-load in `DataSource()`)
+3. Feature: [added] `DataGrid\Database\Connection` bridge class
+4. Feature: [added] eleven CI4 `BaseController` wrappers in
+                    `examples/controllers/` (Code11Example … Code29Example)
+5. Feature: [added] CI4 integration guide consolidated into top-level `README.md`
+6. Feature: [added] `SetPublicUrl($url)` and `SetPublicPath($path)` methods
+                    for explicit control over browser/filesystem locations
+                    of the `public/` asset folder
+7. Feature: [improved] `code_template.php` Section 1 rewritten for CI4 wiring
+8. Feature: [improved] collaborator classes split out under
+                    `src/{Asset,Database,Export,Filter,Render,Security}/`
+9. Feature: [improved] folder layout split: server-side resources moved into
+                    `src/` (`languages/`, `js/`, `styles/`, `tmp/`), browser
+                    assets isolated under `public/` (`images/`, `modules/`,
+                    `scripts/`). Copy `public/` into the CI4 document root.
 1. Bug: [fixed] PHP8 syntax issues
-
+1. Removed: PDO support and `$dbType` PDO branch
+2. Removed: legacy adapters: oci, ibm, ibase, firebird, sybase, mssql, odbc
+3. Removed: standalone `examples/code_*_example.php` (replaced by controllers)
+4. Removed: `examples/datagrid_extention.class.php`,
+            `examples/index.php`, `examples/index.html`,
+            `datagrid/robots.txt`
+5. Deprecated: `SetAssetsUrl()` — use `SetPublicUrl()` instead.
+   Supported drivers are now: MySQLi, Postgre, SQLSRV, SQLite3.
 
 ======================================================================================
 --- Version 8.5.4 [15.05.2021]
@@ -14,7 +38,6 @@
 2. Bug: [fixed] PHP8 syntax issues
 3. Bug: [fixed] fixed from/to filtering issue for dates
 4. Bug: [fixed] fixed issues in deleting uploaded file
-
 
 ======================================================================================
 --- Version 8.4.7 [23.05.2020]
@@ -29,7 +52,6 @@
 5. Bug: [fixed] wrong UTF-8 encoding for foreign keys
 6. Bug: [fixed] in selecting year for dates in DDL format
 7. Bug: [fixed] wrong calculation aggregate function, when 'on_item_created' used
-
 
 ======================================================================================
 --- Version 8.3.9 [09.05.2019]
@@ -46,7 +68,6 @@
 7. Bug: [fixed] error messages on wrong db table
 8. Bug: [fixed] error messages in debug mode
 9. Bug: [fixed] PHP7 format for tFPDF module
-
 
 ======================================================================================
 --- Version 8.2.7 [01.02.2017]
@@ -66,7 +87,6 @@
 5. Bug: [fixed] displaying debug info with html non-encoded entities
 6. Bug: [fixed] removed wrong validation of labels in FieldsValidation() method
 7. Bug: [fixed] missing enctype="multipart/form-data" for uploadType = 'all' type
-
 
 ======================================================================================
 --- Version 8.1.8 [20.01.2016]
@@ -89,7 +109,6 @@
 7. Bug: [fixed] passed variables by reference some errors
 8. Bug: [fixed] on exporting fields with limitation in length were shown not in full length
 
-
 ======================================================================================
 --- Version 8.0.4 [12.11.2015]
 ======================================================================================
@@ -97,7 +116,6 @@
 2. Bug: [fixed] wrong drawing PDO errors
 3. Bug: [fixed] passing by reference error for DrawDropDownList() method
 4. Bug: [fixed] blocking of uploading files in demo mode
-
 
 ======================================================================================
 --- Version 7.9.9 [28.08.2013]
@@ -120,7 +138,6 @@
 8. Bug: [fixed] unexpected comma while insertion new value for multi-select fields
 9. Bug: [fixed] enum with multi-select doesn't save values while uploading files
 
-
 ======================================================================================
 --- Version 7.8.9 [22.07.2013]
 ======================================================================================
@@ -140,7 +157,6 @@
 8. Bug: [fixed] in Helper::SubString() method when mb_detect_encoding function is not installed
 9. Bug: [fixed] issue with retrieving rid parameter in safeMode
 10. Bug: [fixed] syntax issue in definition of pgsql database connection string for PDO
-
 
 ======================================================================================
 --- Version 7.7.7 [09.10.2012]
@@ -167,7 +183,6 @@
 6. Bug: [fixed] wrong preliminary detection of primary key in PDO extension
 7. Bug: [fixed] dosn't save multi-selection for filtering filds after sorting or pagination operations
 
-
 ======================================================================================
 --- Version 7.6.9 [01.09.2012]
 ======================================================================================
@@ -177,7 +192,7 @@
 
 1. Feature: [improved] exporting - added header tooltips in exporting data
 2. Feature: [improved] exporting - reduced size of exporting popup window, added automatic popup window close after 30 sec.
-3. Feature: [improved] code of exporting routines 
+3. Feature: [improved] code of exporting routines
 3. Feature: [improved] filtering - added new type of default operator "!="
 4. Feature: [improved] possible values in attribute 'resizable' for textareas: 'both', 'horizontal', 'vertical' or 'none'
 5. Feature: [improved] debug information - added filtering SQL statements
@@ -190,8 +205,7 @@
 6. Bug: [fixed] wrong displaying fields with case-sensitivite names
 7. Bug: [fixed] in work of "default_null"=>true for Add and Edit Modes
 8. Bug: [fixed] javascript check for maximum size of uploading file in Opera
-9. Bug: [fixed] wrong processing "link" fields whe nvalue includes &amp; characters 
-
+9. Bug: [fixed] wrong processing "link" fields whe nvalue includes &amp; characters
 
 ======================================================================================
 --- Version 7.5.9 [23.08.2012]
@@ -209,7 +223,6 @@
 7. Bug: [fixed] selected filtering option stays unselected after the search is complete for mssql
 8. Bug: [fixed] in javascript check for uploading file size
 9. Bug: [fixed] in insertion of unchecked checkboxes for Add Mode
-
 
 ======================================================================================
 --- Version 7.4.9 [29.02.2012]
@@ -236,7 +249,6 @@
 8. Bug: [fixed] error on selecting multiple enum filter fields
 9. Bug: [fixed] pagination error when GROUP BY used in View Mode SELECT SQL
 
-
 ======================================================================================
 --- Version 7.3.9 [08.02.2012]
 ======================================================================================
@@ -254,9 +266,8 @@
 5. Bug: [fixed] sorting still works, even if no data found
 6. Bug: [fixed] wrong handling "text_length" attribute for "enum" fields in View Mode
 7. Bug: [fixed] in filtering, when used comma separated list of fields
-8. Bug: [fixed] in filtering "enum" fieldfs, when used commas in the field values 
+8. Bug: [fixed] in filtering "enum" fieldfs, when used commas in the field values
 9. Bug: [fixed] in exporting procedure when BLOB fields are present
-
 
 ======================================================================================
 --- Version 7.2.9 [16.01.2012]
@@ -275,20 +286,19 @@
 2. Bug: [fixed] in preparing output for "datetimedmy" field type
 3. Bug: [fixed] in drawing navigationBar, when not printing or exporting options defined
 4. Bug: [fixed] in displaying password fields with AES encryption for customized layout
-5. Bug: [fixed] cutting table's name when use MSSQL driver for auto-generated columns 
+5. Bug: [fixed] cutting table's name when use MSSQL driver for auto-generated columns
 6. Bug: [fixed] in setting NULL value for empty numeric fields
 7. Bug: [fixed] in displaying "password" fields in View Mode
 8. Bug: [fixed] in SetFieldsFilteringInBind() - special thanks to Franklin Calle Zapata
 9. Bug: [fixed] handling errors in INSERT/DELETE SQL for PDO
 
- 
 ======================================================================================
 --- Version 7.1.5 [26.10.2011]
 ======================================================================================
 1. Feature: [added] non-documented attribute for text fields in Add/Edit Modes - "default_null"=>"true"
 2. Feature: [added] non-documented attribute for image fields in Add/Edit Modes - "resize_dir"=>"down|up|both"
 3. Feature: [added] on client side check (javascript) for allowed file extensions before uploading
-4. Feature: [added] possibility to export into xls files: "xls"=>"true" 
+4. Feature: [added] possibility to export into xls files: "xls"=>"true"
 5. Feature: [added] non-documented property: $this->uploadType = "by_one|all"; that defines a type of files/images submission
 6. Feature: [added] support for PDO extension
 
@@ -304,7 +314,6 @@
 3. Bug: [fixed] in drawing validator field when "visible" defined as "false"
 4. Bug: [fixed] with clear upload file input field for IE
 5. Bug: [fixed] wrong handling of maxlength attribute for "calendar" fields in filtering section
-
 
 ======================================================================================
 --- Version 7.0.9 [02.10.2011]
@@ -323,12 +332,11 @@
 2. Bug: [fixed] in displaying "enum" fields in Print View
 3. Bug: [fixed] when using single or double quotes in filtering fields text
 4. Bug: [fixed] in errors handler for View Mode
-5. Bug: [fixed] limit rows issue for InterBase XE 
+5. Bug: [fixed] limit rows issue for InterBase XE
 6. Bug: [fixed] loses filtering fields on sorting and paging if filtering was defined on few fields, like "f1,f2,f3" etc...
 7. Bug: [fixed] in "show_on_print" feature when field id invisible in View Mode
 8. Bug: [fixed] generating wrong SELECT SQL for inline editing (after search and pagination operations)
 9. Bug: [fixed] displaying navigationBar on Details Mode
-
 
 ======================================================================================
 --- Version 6.9.9 [07.09.2011]
@@ -355,7 +363,6 @@
 8. Bug: [fixed] for Oracle DB - losing dataset after Filtering Mode
 9. Bug: [fixed] loses default SORT BY if default filtering is allowed
 
-
 ======================================================================================
 --- Version 6.8.9 [18.06.2011]
 ======================================================================================
@@ -376,21 +383,20 @@
 1. Bug: [fixed] error on clonning records for PostgreSQL
 2. Bug: [fixed] in syntax for MSSQL procedure - unexpected table name in SELECT SQL
 3. Bug: [fixed] error while processing unique values for customized layout
-4. Bug: [fixed] saves wrong values for filtering fields when non-english characters used 
+4. Bug: [fixed] saves wrong values for filtering fields when non-english characters used
 5. Bug: [fixed] in drawing images in IE with empty width='' or height=''
 6. Bug: [fixed] unexpected loop for default filtering fields
 7. Bug: [fixed] in getting a preliminary Primary Key procedure. Special Thanks to dan <dadu@***.it>
 8. Bug: [fixed] attribute "width"=>"" for "enum" fields was not working
 9. Bug: [fixed] in FF with passing event parameter into verifyDelete() function
 
-
 ======================================================================================
 --- Version 6.7.5 [21.04.2011]
 ======================================================================================
-1. Feature: [added] non-documented property: maximumAllowedRecords = "100"; 
+1. Feature: [added] non-documented property: maximumAllowedRecords = "100";
 
 1. Feature: [improved] working of controlsDisplayingType = "grouped" non-documented feature
-2. Feature: [improved] after failed check for unique field value datagrid stays on Add/Edit Mode 
+2. Feature: [improved] after failed check for unique field value datagrid stays on Add/Edit Mode
 3. Feature: [improved] working of scrolling feature for IE 7+
 4. Feature: [improved] working with "on_js_event" attribute
 
@@ -399,7 +405,6 @@
 3. Bug: [fixed] for uploading images/fiels in master/details datagrid structure
 4. Bug: [fixed] in updating of empty password for MD5 encryption
 5. Bug: [fixed] wrong drawing non-english texts in exporting for .CVS and .XML
-
 
 ======================================================================================
 --- Version 6.6.9 [10.04.2011]
@@ -427,11 +432,10 @@
 8. Bug: [fixed] losing default order on pagination
 9. Bug: [fixed] syntax error on processing empty content in FPDF module
 
-
 ======================================================================================
 --- Version 6.5.9 [21.03.2011]
 ======================================================================================
-1. Feature: [added] "header_tooltip" and "header_tooltip_type" added to Add/Edit/Details Modes 
+1. Feature: [added] "header_tooltip" and "header_tooltip_type" added to Add/Edit/Details Modes
 
 1. Feature: [improved] width of "barchart" field allows to define a width of the chart
 2. Feature: [improved] added handler of {0/1...} holders for "label" type of fields
@@ -442,14 +446,13 @@
 
 1. Bug: [fixed] in drawing filtering when View Mode layout is Columnar
 2. Bug: [fixed] in drawing Multi-Select "enum" fields in Details Mode
-3. Bug: [fixed] in CSS styles "blue" and "pink" with FONT definition. Special Thanks to user "purlut". 
+3. Bug: [fixed] in CSS styles "blue" and "pink" with FONT definition. Special Thanks to user "purlut".
 4. Bug: [fixed] in saving http vars on uploading file or image
 5. Bug: [fixed] in checking sensitivity for filtering fields
 6. Bug: [fixed] in checking datetime fields, that inludes "NOW" as a part of their name
 7. Bug: [fixed] in drawing "hidden" field for Tabular layouts
 8. Bug: [fixed] in default sorting for customized layouts in View Mode
 9. Bug: [fixed] added different ID's while drawing radiobuttons group
-
 
 ======================================================================================
 --- Version 6.4.1 [14.12.2010]
@@ -459,8 +462,7 @@
 1. Feature: [improved] for checkboxes implemented for="" attribute
 2. Feature: [improved] SetDefaultFiltering() - added new attribute for calendar fields "field_type"=>""
 
-1. Bug: [fixed] in JS AFV with checkbox types 
-
+1. Bug: [fixed] in JS AFV with checkbox types
 
 ======================================================================================
 --- Version 6.3.9 [13.12.2010]
@@ -480,14 +482,13 @@
 1. Bug: [fixed] in filtering when blank simbols are used in field values
 2. Bug: [fixed] with using commas in enum fields values
 3. Bug: [fixed] with using commas in filtering values, when view type is dropdownlist
-4. Bug: [fixed] substring of non-english words with bad simbols (#) at the end. 
+4. Bug: [fixed] substring of non-english words with bad simbols (#) at the end.
 5. Bug: [fixed] in processing "summarize" functions, when sum value is zero.
-6. Bug: [fixed] autocomplete didn't work after sorting or paging when PostBack = Ajax 
+6. Bug: [fixed] autocomplete didn't work after sorting or paging when PostBack = Ajax
 7. Bug: [fixed] in validation for fields with "template", when field is not required
 8. Bug: [fixed] in working with "money" format and default money value for different modes
 9. Bug: [fixed] in sending parameters of verifyDelete() javascript function
 10. Bug: [fixed] in working with safeMode = true;
-
 
 ======================================================================================
 --- Version 6.2.9 [22.11.2010]
@@ -497,7 +498,7 @@
 3. Feature: [added] new attributes for "barchart" fields: "value_sign"=>"", that draws a sign near barchart value
                     "minimum_color"=>"", "minimum_value"=>"", "middle_color"=>"", "middle_value"=>"", "maximum_color"=>""
 
-1. Feature: [improved] exporting feature for xml and csv 
+1. Feature: [improved] exporting feature for xml and csv
 2. Feature: [improved] displaying "date" fields for auto-generated fields in Edit Mode
 3. Feature: [improved] save highlighting rows on click (now to highlight rows user need to 'turn On' multi-row operations)
 4. Feature: [improved] cleaning block for sql statement - remove apostrophes "`"
@@ -513,7 +514,6 @@
 8. Bug: [fixed] in drawing datetime/hidden fields with default value NOW or CURRENT_TIMESTAMP.
 9. Bug: [fixed] checkbox was not saved checked/un-checked state whjile uploading/deleting files
 10. Bug: [fixed] extra <TR> tags while drawing Details Mode for multi-row
-
 
 ======================================================================================
 --- Version 6.1.2 [19.10.2010]
@@ -537,7 +537,6 @@
 9. Bug: [fixed] in RemoveBadChars() method
 10. Bug: [fixed] problem with paging after filtering for mssql driver
 
-
 ======================================================================================
 --- Version 6.1.1 [15.09.2010]
 ======================================================================================
@@ -552,9 +551,8 @@
 9. Bug: [fixed] datagrid doesn't store pagination, when sorting performed for customized layouts
 10. Bug: [fixed] drawing wrong value for hidden fields in Edit Mode (Columnar layout)
 11. Bug: [fixed] inline editing was not work properly with AJAX "turned On"
-12. Bug: [fixed] in ORDER clause for inline editing SQL 
+12. Bug: [fixed] in ORDER clause for inline editing SQL
 13. Bug: [fixed] in Helper.class.pnp - wrong call of function_exists()
-
 
 ======================================================================================
 --- Version 6.1.0 [10.09.2010]
@@ -562,14 +560,14 @@
 1. Feature: [added] non-documented property "dtSeparator" for datetime fields
 2. Feature: [added] new type of multi-row operations: clone record
 3. Feature: [added] possibility to separate binding and displaying of datagrid by using Bind(false) and Show() methods
-2. Feature: [added] caching for Details Mode 
+2. Feature: [added] caching for Details Mode
 
 1. Feature: [improved] SetDefaultFiltering() method works now with all field types
 2. Feature: [improved] Debug Mode output information for tabular layouts in Edit Mode (using virtual fields for sorting in View Mode)
 3. Feature: [improved] highlighting rows by mouse click - now it selects row by click on any empty place in row
 4. Feature: [improved] checking for vulnerability attacks
 5. Feature: [improved] drawing tables in PDF export module
-6. Feature: [improved] AllowAjax() method replaced with SetPostBackMethod(), that have 3 possible values: post, get or ajax 
+6. Feature: [improved] AllowAjax() method replaced with SetPostBackMethod(), that have 3 possible values: post, get or ajax
 7. Feature: [improved] improved translation for German, Croatian and Serbian languages. Special thanks to Kasumovic Mario.
 
 1. Bug: [fixed] with some non-closed HTML tags in output
@@ -583,15 +581,14 @@
 9. Bug: [fixed] in SetDefaultFiltering() method - didn't work properly
 10. Bug: [fixed] js error in using scrolling feature for IE8
 
-
 ======================================================================================
 --- Version 6.0.9 [01.09.2010]
 ======================================================================================
 1. Feature: [added] new language added - Lithuanian(lt). Special thanks to Girmantas B.
 2. Feature: [added] new attribute for image|file fields "allowed_extensions"=>"",
                       where allowed extensions may be written separated by commas
-3. Feature: [added] non-documented property "show_on_print" ="false|true(default)" 
-4. Feature: [added] non-documented property "show_on_export" ="false|true(default)" 
+3. Feature: [added] non-documented property "show_on_print" ="false|true(default)"
+4. Feature: [added] non-documented property "show_on_export" ="false|true(default)"
 5. Feature: [added] AJAX for details and Delete Mode operations
 
 1. Feature: [improved] strips excess whitespace from View Mode SQL string
@@ -610,12 +607,11 @@
 9. Bug: [fixed] with cancel button in add mode
 10. Bug: [fixed] wrong row numeration for odbc driver
 
-
 ======================================================================================
 --- Version 6.0.8 [17.05.2010]
 ======================================================================================
 1. Feature: [added] possibility to show count of filter values in dropdown lists: "show_count"=>true
-2. Feature: [added] non-documented property initFilteringState ="closed|opened (default)" 
+2. Feature: [added] non-documented property initFilteringState ="closed|opened (default)"
 3. Feature: [added] caching feature for View mode
 
 1. Feature: [improved] removed `` from tables and fields names
@@ -638,27 +634,26 @@
 11. Bug: [fixed] in validation of entered data for filtering, when comparison type 'numeric'
 12. Bug: [fixed] in drawing tool-tips for "enum" fields in Add/Edit modes
 13. Bug: [fixed] in drawing Multi-row bar for customized templates
-14. Bug: [fixed] in multi-row selecting after changing page size  
+14. Bug: [fixed] in multi-row selecting after changing page size
 15. Bug: [fixed] in uploading images and files function
 16. Bug: [fixed] in parsing of SELECT SQL in View mode with sub-SELECTs
 17. Bug: [fixed] in Oracle driver for inserting new record
 18. Bug: [fixed] in scrolling feature for Chrome, Opera and Safari browsers
 19. Bug: [fixed] on using UNSIGNED ZEROFILL for Primary Keys
 
-
 ======================================================================================
 --- Version 6.0.7 [19.03.2010]
 ======================================================================================
 1. Feature: [added] in Oracle driver (pear/DB/oci8.php)
-2. Feature: [added] in JS Auto Form Validator on Form submition 
+2. Feature: [added] in JS Auto Form Validator on Form submition
 3. Feature: [added] new field's type - "percent" (in View and Edit Modes)
-4. Feature: [added] non-documented method SetDefaultTimezone("America/Los_Angeles"); 
+4. Feature: [added] non-documented method SetDefaultTimezone("America/Los_Angeles");
 5. Feature: [added] added new attribute "allow_downloading"=>"true|false" for "file" and "image" field types in Details Mode
 6. Feature: [added] new datetime format: datemdy(mm-dd-yyyy) for "datetime" fiweds in all modes
 
 1.  Feature: [improved] CSS style for linktoview/linktoedit/linktodelete fields (added tooltip)
 2.  Feature: [improved] Add/View/Delete columns were narrowed
-3.  Feature: [improved] updated German language translation. Special thanks to Manfred Breitkreuz. 
+3.  Feature: [improved] updated German language translation. Special thanks to Manfred Breitkreuz.
 4.  Feature: [improved] improved translation for most languages
 5.  Feature: [improved] css style for displaying Upload button ("file" and "image" fields)
 6.  Feature: [improved] PEAR::DB package updated from version 1.3 to version 1.7.14RC1
@@ -676,7 +671,6 @@
 11. Bug: [fixed] in drawing Edit Button in Columnar Layout for View Mode
 12. Bug: [fixed] in WYSIWYG Editor on inserting a new table
 
-
 ======================================================================================
 --- Version 6.0.6  [28.02.2009]
 ======================================================================================
@@ -688,7 +682,7 @@
 1.  Feature: [improved] SQL statements syntax by adding `` for table and field names
 2.  Feature: [improved] JS AFV module updated to version 2.0.1
 3.  Feature: [improved] addedd :hover and :focus effect in textboxes and textareas for X-styles
-4.  Feature: [improved] search by range feature: now it possible for all type of fields in Filtering by using "field_type"=>"from|to" 
+4.  Feature: [improved] search by range feature: now it possible for all type of fields in Filtering by using "field_type"=>"from|to"
 
 1. Bug: [fixed] with including some language files for Master/Details structure
 2. Bug: [fixed] in checkboxes handler code
@@ -696,7 +690,6 @@
 4. Bug: [fixed] in oci8 driver for Oracle in numRows() method
 5. Bug: [fixed] minor issues with datetime fields
 6. Bug: [fixed] in using thousands and decimal separators for "money" fields
-
 
 ======================================================================================
 --- Version 6.0.5 [04.12.2009]
@@ -714,13 +707,12 @@
 6. Bug: [fixed] in using of SERVER['QUERY_STRING'] for IIS 5.1
 7. Bug: [fixed] in using onSubmitMyCheck() JavaScript function for FireFox
 8. Bug: [fixed] in drawing floating tooltips, that contain single quotation mark
-9. Bug: [fixed] in drawing {0}, {1} etc. parameters for "link" fields in Details Mode 
+9. Bug: [fixed] in drawing {0}, {1} etc. parameters for "link" fields in Details Mode
 10. Bug: [fixed] with single quote problem for filtering dropdown list (suggested by kalak)
 11. Bug: [fixed] in sorting and paging, performed after filtering with "multiple"=>"true" (suggested by kalak)
 12. Bug: [fixed] in javascript for brackets and plus signs in url (suggested by kalak)
 13. Bug: [fixed] [CANCEL] and [UPDATE] didn't work in customized layouts
 14. Bug: [fixed] in showing popup Calendar
-
 
 ======================================================================================
 --- Version 6.0.4 [16.10.2009]
@@ -743,7 +735,6 @@
 6. Bug: [fixed] in exporting when in View and Edit Modes.
 7. Bug: [fixed] in working with safeMode turned "On".
 
-
 ======================================================================================
 --- Version 6.0.3 [25.09.2009]
 ======================================================================================
@@ -760,7 +751,6 @@
 5. Bug: [fixed] in drawing checkbox field in Edit mode
 6. Bug: [fixed] in calculating of summarize values
 7. Bug: [fixed] in Filtering with floating calendar, when AJAX enabled
-
 
 ======================================================================================
 --- Version 6.0.2 [28.08.2009]
@@ -783,7 +773,6 @@
 10. Bug: [fixed] attribute "visible" didn't work in Add Mode
 11. Bug: [fixed] mixed "&" and "&amp;" in url strings
 12. Bug: [fixed] wrong url string on paging navigation
-
 
 ======================================================================================
 --- Version 6.0.1 [08.08.2009]
@@ -808,7 +797,7 @@
 1. Bug: [fixed] displaying wrong data for "money" fields in edit/details modes
 2. Bug: [fixed] in processing upper/lower case for non-english words
 3. Bug: [fixed] in syntax of filtering SQL (missing parentheses around)
-4. Bug: [fixed] in using ApPHP DataGrid with Oracle (special Thanks to deeptibaghel)
+4. Bug: [fixed] in using PHP DataGrid with Oracle (special Thanks to deeptibaghel)
 5. Bug: [fixed] upper/lower case didn't work for link fields
 6. Bug: [fixed] some minor CSS style errors
 7. Bug: [fixed] drawing hidden fields in Print Mode

@@ -1,0 +1,43 @@
+################################################################################
+##  PHP DataGrid X-Graphite Template                                         #
+##  -------------------------------------------------------------------------- #
+##  Developed by:   <info@>                                      #
+##  Version:       1.0.2                                                       #
+##  License:        Template License v.1                                  #
+##  Site:                                   #
+##  Copyright:     PHP DataGrid Templates (c) 2012. All rights reserved.     #
+##                                                                             #
+################################################################################
+
+Thank you for using  software!
+--------------------------------------------------------------------------------
+
+Software requirements: PHP DataGrid 7.6.0 or later version.
+
+A new installation of the template for PHP DataGrid is a very straight
+forward process:
+
+Step 1. Uncompressing downloaded file.
+-------------------------------------
+   Uncompress the PHP DataGrid Template archive. The archive will create
+   a directory called "PHPDG_TPL_xxx".
+
+Step 2. Uploading files.
+-------------------------------------
+   Upload content of this folder (all files and directories it includes) to the
+   directory called "styles" in your DataGrid directory using FTP.
+
+   Pay attention to DON'T use the capital letters in the name of the folder (for Linux users).
+
+   public_html/styles/
+   or
+   public_html/{datagrid directory}/styles/
+
+Step 4. Selecting the new template for your component.
+-------------------------------------
+   Now you can select this template. To do this simply define in appropriate place
+   of your code for DataGrid
+
+   $dgrid->SetCssClass('x-graphite');
+
+Congratulations, you now have PHP DataGrid X-Graphite template installed!

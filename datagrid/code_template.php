@@ -3,14 +3,13 @@
 
     ## wee need this if we want to prevent FF sending double request
     header('content-type: text/html; charset=utf-8');
-    
+
     ## uncomment, if your want to prevent 'Web Page exired' message when use $submission_method = 'post';
     ## (don't uncomment, if your export feature is active)
-    // session_cache_limiter ('private, must-revalidate');    
+    // session_cache_limiter ('private, must-revalidate');
     ## uncomment, if your export feature (or movable rows) is active
     // session_start();
 
-        
     /***
      * Uncomment all needed lines of the code
      * ---------------------
@@ -18,7 +17,7 @@
      *   ## as comments
      *   // as lines, that must be uncommented
      *   /// as lines, that may be uncommented (optional)
-     *   
+     *
     */
 
     /***
@@ -28,55 +27,71 @@
      *  2. Do not put DataGrid code into another HTML form: <form>...</form>
      *  3. Be careful when using the names of fields they may be case sensitive!
      *  4. For the best performance uncomment ob_start(); and ob_end_flush(); functions.
-     *  
+     *
     */
 
-
     ################################################################################
-    ## --------------------------------------------------------------------------- #
-    ##  ApPHP DataGrid Pro (AJAX enabled) version 8.5.4                            #
-    ##  Developed by:  ApPHP <info@apphp.com>                                      # 
-    ##  License:       GNU LGPL v.3                                                #
-    ##  Site:          https://www.apphp.com/php-datagrid/                         #
-    ##  Copyright:     ApPHP DataGrid (c) 2006-2019. All rights reserved.          #
-    ##                                                                             # 
+    ##  PHP DataGrid — starter template (CodeIgniter 4 fork).
+    ##  License: GNU LGPL v3.
     ################################################################################
     ## +---------------------------------------------------------------------------+
-    ## | 1. Creating & Calling:                                                    | 
+    ## | 1. Creating & Calling:                                                    |
     ## +---------------------------------------------------------------------------+
-    ##  *** define a relative (virtual) path to datagrid.class.php file
-    ##  *** (relatively to the current file)
-    ##  *** RELATIVE PATH ONLY ***
-    //  define ('DATAGRID_DIR', '');                     /* Ex.: 'datagrid/' */
-    //  require_once(DATAGRID_DIR.'datagrid.class.php');
+    ##  *** Library layout (after Phase 10 restructure):
+    ##  ***   datagrid/
+    ##  ***   ├── src/        (server-side: PHP classes, languages, js, styles, tmp)
+    ##  ***   └── public/     (browser-served: images, modules, scripts)
+    ##  ***
+    ##  *** Inside a CI4 app, register the PSR-4 namespace in app/Config/Autoload.php:
+    ##  ***   'DataGrid' => APPPATH.'Libraries/DataGrid/src',
+    ##  *** Then publish the public/ folder under your CI4 public/ document root
+    ##  *** (e.g. <ci4>/public/datagrid/) and call:
+    ##  ***   $dgrid->SetPublicUrl(base_url('datagrid'));
+    ##  ***
+    ##  *** For non-CI4 standalone usage, define DATAGRID_DIR as the URL prefix
+    ##  *** to the datagrid/ folder; the constructor will derive publicUrl from it.
+    //  define('DATAGRID_DIR', 'datagrid/');         /* URL prefix; trailing slash required */
+    //  require_once(DATAGRID_DIR.'src/DataGrid.php');
+    //  use DataGrid\DataGrid;
     ##
-    ##  *** creating variables that we need for database connection 
-    //  $DB_USER='name';            /* usually like this: prefix_name             */
-    //  $DB_PASS='';                /* don't use empty passwords (recommended)    */
-    //  $DB_HOST='localhost';       /* usually localhost                          */
-    //  $DB_NAME='dbName';          /* usually like this: prefix_dbName           */
+    ##  *** CodeIgniter 4 is required. Inside a CI4 application, the framework
+    ##  *** autoloader and \Config\Database are available automatically. For
+    ##  *** stand-alone usage, see examples/install/config.inc.php for a
+    ##  *** minimal Composer-based bootstrap.
+    //  $db = \Config\Database::connect();           /* default group           */
+    //  // $db = \Config\Database::connect('other');  /* named group (optional) */
     //
     //  ob_start();
     ##
-    ##  *** set needed options and create a new class instance 
-    //  $debug_mode = false;        /* display SQL statements while processing */
-    //  $messaging = true;          /* display system messages on a screen */
-    //  $unique_prefix = 'abc_';    /* prevent overlays - must be started with a letter */
+    ##  *** set needed options and create a new class instance
+    //  $debug_mode    = false;     /* display SQL statements while processing       */
+    //  $messaging     = true;      /* display system messages on a screen           */
+    //  $unique_prefix = 'abc_';    /* prevent overlays - must start with a letter   */
     //  $dgrid = new DataGrid($debug_mode, $messaging, $unique_prefix);
+    ##
+    ##  *** point the grid at your published public/ assets
+    ##  *** (skip if DATAGRID_DIR was defined and resolves to a browser-reachable URL)
+    //  $dgrid->SetPublicUrl(base_url('datagrid'));   /* CI4 helper */
+    //  // $dgrid->SetPublicPath(APPPATH.'Libraries/DataGrid/public/'); /* only if non-default */
     ##  *** set encoding and collation (default: utf8/utf8_unicode_ci)
-    /// $dg_encoding = 'utf8';
+    /// $dg_encoding  = 'utf8';
     /// $dg_collation = 'utf8_unicode_ci';
     /// $dgrid->SetEncoding($dg_encoding, $dg_collation);
     ##  *** set data source with required settings
     ##  *** 1. write all fields separated by commas(,) like: field1, field2 etc.. DON'T USE table.*
     ##  *** 2. write the primary key in the first place (MUST BE AUTO-INCREMENT NUMERIC!)
-    //  $sql = 'SELECT primary_key, field_1, field_2 ... FROM tableName ;';
+    //  $sql = 'SELECT primary_key, field_1, field_2 ... FROM tableName';
     //  $default_order = array();   /* Ex.: array('field_1'=>'ASC', 'field_2'=>'DESC') */
-    //  $dgrid->DataSource('PDO', 'mysql', $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS, $sql, $default_order);
+    //
+    //  ##  Preferred (CI4): pass the BaseConnection from \Config\Database::connect()
+    //  $dgrid->DataSource($db, $sql, $default_order);
+    //
+    //  ##  Auto-load equivalent (uses CI4's default group when no $db supplied):
+    //  // $dgrid->DataSource($sql, $default_order);
     ##
     ##
     ## +---------------------------------------------------------------------------+
-    ## | 2. General Settings:                                                      | 
+    ## | 2. General Settings:                                                      |
     ## +---------------------------------------------------------------------------+
     ## +-- PostBack Submission Method ---------------------------------------------+
     ##  *** defines postback submission method for DataGrid: AJAX, POST(default) or GET
@@ -94,13 +109,13 @@
     ##  *** set interface language (default - English)
     ##  *** (ar) - Arabic     (bg) - Bulgarian        (ca) - Catala     (ch) - Chinese
     ##  *** (cz) - Czech      (da) - Danish           (de) - German     (en) - English
-    ##  *** (es) - Espanol    (fi) - Finnish, Suomi   (fr) - Francais   (gk) - Greek     
+    ##  *** (es) - Espanol    (fi) - Finnish, Suomi   (fr) - Francais   (gk) - Greek
     ##  *** (he) - Hebrew     (hr) - Bosnian/Croatian (hu) - Hungarian  (it) - Italian
-    ##  *** (ja) - Japanese   (ko) - Korean           (lt) - Lithuanian (nl) - Netherlands/'Vlaams'(Flemish)      
+    ##  *** (ja) - Japanese   (ko) - Korean           (lt) - Lithuanian (nl) - Netherlands/'Vlaams'(Flemish)
     ##  *** (pl) - Polish     (pb) - Br.Portuguese    (ro) - Romanian   (ru) - Russian
     ##  *** (sv) - Swedish    (sr) - Serbian          (th) - Thai       (tr) - Turkish
     ##  *** (pt) - Portuguese (tw) - Traditional Chinese
-    /// $dg_language = 'en';  
+    /// $dg_language = 'en';
     /// $dgrid->SetInterfaceLang($dg_language);
     ##  *** set direction: 'ltr' or 'rtr' (default - 'ltr')
     /// $direction = 'ltr';
@@ -110,13 +125,13 @@
     ##  *** datagrid layouts: '0' - tabular(horizontal) - default, '1' - columnar(vertical), '2' - customized
     ##  *** use 'view'=>'0' and 'edit'=>'0' only if you work on the same tables
     ##  *** filter layouts: '0' - tabular(horizontal) - default, '1' - columnar(vertical), '2' - advanced(inline)
-    /// $layouts = array('view'=>'0', 'edit'=>'1', 'details'=>'1', 'filter'=>'1'); 
+    /// $layouts = array('view'=>'0', 'edit'=>'1', 'details'=>'1', 'filter'=>'1');
     /// $dgrid->SetLayouts($layouts);
     /// *** $mode_template = array('header'=>'', 'body'=>'', 'footer'=>'');
-    /// @field_name_1@ - field header 
+    /// @field_name_1@ - field header
     /// {field_name_1} - field value
     /// allowed elements and operations (must be placed in $template['body'] only, [ADD] may be placed in ['header'] section also)
-    /// [ADD][CREATE][EDIT][DELETE][BACK][CANCEL][UPDATE][MULTIROW_CHECKBOX][ROWS_NUMERATION] 
+    /// [ADD][CREATE][EDIT][DELETE][BACK][CANCEL][UPDATE][MULTIROW_CHECKBOX][ROWS_NUMERATION]
     /// $view_template = '';
     /// $add_edit_template = '';
     /// $details_template = array('header'=>'', 'body'=>'', 'footer'=>'');
@@ -125,7 +140,7 @@
     /// $details_template['footer'] = '';
     /// $dgrid->SetTemplates($view_template, $add_edit_template, $details_template);
     ##  *** set modes operations ('type' => 'link|button|image')
-    ##  *** 'view' - view mode, 'edit' - add/edit/details modes, 
+    ##  *** 'view' - view mode, 'edit' - add/edit/details modes,
     ##  *** 'byFieldValue'=>'fieldName' - make the field to be a link to edit mode page
     /// $modes = array(
     ///     'add'	  =>array('view'=>true, 'edit'=>false, 'type'=>'link',  'show_button'=>true, 'show_add_button'=>'inside|outside'),
@@ -139,12 +154,12 @@
     /// $css_class = 'default';
     /// $dgrid->SetCssClass($css_class);
     ##  *** set DataGrid caption
-    /// $dg_caption = 'My Favorite Lovely ApPHP DataGrid';
+    /// $dg_caption = 'My Favorite Lovely PHP DataGrid';
     /// $dgrid->SetCaption($dg_caption);
     ##
     ## +-- Scrolling --------------------------------------------------------------+
-    ##  *** allow scrolling on datagrid: true or false(default) 
-    /// $dgrid->AllowScrollingSettings(false);  
+    ##  *** allow scrolling on datagrid: true or false(default)
+    /// $dgrid->AllowScrollingSettings(false);
     ##  *** set scrolling settings (optional) ex.: '190px' or '190'
     /// $dgrid->SetScrollingSettings('100px');
     ##
@@ -161,29 +176,29 @@
 	///     'exchange' => array('view'=>false,  'fields'=>array('field1', 'field2')),
     ///     'my_operation_name' => array('view'=>true, 'flag_name'=>'my_flag_name', 'flag_value'=>'my_flag_value', 'tooltip'=>'Do something with selected', 'image'=>'image.gif')
     /// );
-    /// $dgrid->SetMultirowOperations($multirow_operations);  
+    /// $dgrid->SetMultirowOperations($multirow_operations);
     ##
     ## +-- Passing parameters & setting up other DataGrids ------------------------+
-    ##  *** set variables that used to get access to the page (like: my_page.php?act=34&id=56 etc.) 
+    ##  *** set variables that used to get access to the page (like: my_page.php?act=34&id=56 etc.)
     /// $http_get_vars = array('act', 'id');
     /// $dgrid->SetHttpGetVars($http_get_vars);
     ##  *** set other datagrid/s unique prefixes (if you use few datagrids on one page)
     ##  *** format (in which mode to allow processing of other datagrids)
     ##  *** array('unique_prefix'=>array('view'=>true|false, 'edit'=>true|false, 'details'=>true|false));
     /// $otherDatagrids = array('abcd_'=>array('view'=>true, 'edit'=>true, 'details'=>true));
-    /// $dgrid->SetOtherDatagrids($otherDatagrids);  
+    /// $dgrid->SetOtherDatagrids($otherDatagrids);
     ##
     ##
     ## +---------------------------------------------------------------------------+
-    ## | 3. Printing & Exporting Settings:                                         | 
+    ## | 3. Printing & Exporting Settings:                                         |
     ## +---------------------------------------------------------------------------+
     ## +-- Printing ---------------------------------------------------------------+
-    ##  *** set printing option: true(default) or false 
+    ##  *** set printing option: true(default) or false
     /// $dgrid->AllowPrinting(true);
     ##
     ## +-- Exporting --------------------------------------------------------------+
     ##  *** initialize the session with session_start();
-    ##  *** default exporting directory (requires write permissions): tmp/export/ 
+    ##  *** default exporting directory (requires write permissions): tmp/export/
     /// $export_all = false;
     /// $dgrid->AllowExporting(true, $export_all);
     /// $exporting_types = array('csv'=>'true', 'xls'=>'true', 'pdf'=>'true', 'xml'=>'true', 'doc'=>'true');
@@ -191,11 +206,11 @@
     ##
     ##
     ## +---------------------------------------------------------------------------+
-    ## | 4. Sorting & Paging Settings:                                             | 
+    ## | 4. Sorting & Paging Settings:                                             |
     ## +---------------------------------------------------------------------------+
-    ##  *** set sorting option: true(default) or false 
-    /// $dgrid->AllowSorting(true);               
-    ##  *** set paging option: true(default) or false 
+    ##  *** set sorting option: true(default) or false
+    /// $dgrid->AllowSorting(true);
+    ##  *** set paging option: true(default) or false
     /// $paging_option = true;
     /// $rows_numeration = false;
     /// $numeration_sign = 'N #';
@@ -211,7 +226,7 @@
     ##
     ##
     ## +---------------------------------------------------------------------------+
-    ## | 5. Filter Settings:                                                       | 
+    ## | 5. Filter Settings:                                                       |
     ## +---------------------------------------------------------------------------+
     ##  *** set filtering option: true or false(default)
     /// $filtering_option = true;
@@ -236,13 +251,13 @@
     ##  *** allow default filtering: true or false(default)
     /// $dgrid->AllowDefaultFiltering(true);
     ##
-    ## 
+    ##
     ## +---------------------------------------------------------------------------+
-    ## | 6. View Mode Settings:                                                    | 
+    ## | 6. View Mode Settings:                                                    |
     ## +---------------------------------------------------------------------------+
     ##  *** set view mode table properties
     /// $vm_table_properties = array('width'=>'90%');
-    /// $dgrid->SetViewModeTableProperties($vm_table_properties);  
+    /// $dgrid->SetViewModeTableProperties($vm_table_properties);
     ##  *** set columns in view mode
     ##  *** Ex.: 'on_js_event'=>'onclick="alert(\'Yes!!!\');"'
     ##  ***      'barchart' : number format in SELECT SQL must be equal with number format of max_value
@@ -287,20 +302,20 @@
     ##  for ex.: 'table_name.field = '.$_REQUEST['abc_rid'];
     //  $condition   = '';
     //  $dgrid->SetTableEdit($table_name, $primary_key, $condition);
-    ##  *** set columns in edit mode   
+    ##  *** set columns in edit mode
     ##  *** first letter:  r - required, s - simple (not required)
-    ##  *** second letter: t - text(including datetime), n - numeric, a - alphabetic, e - email, f - float, 
+    ##  *** second letter: t - text(including datetime), n - numeric, a - alphabetic, e - email, f - float,
     ##                     y - any(generally used for foreign languages), l - login name, z - zipcode,
     ##                     p - password, i - integer, v - verified, c - checked (for checkboxes), u - URL
     ##                     s - SSN number, m - telephone, b - alphanumeric, r - checked (for radiobuttons)
-    ##                     x - template  (for example - 'req_type'='rx', 'template'=>'(ddd)-ddd-dd-dd', where d - digit, c - character)     
-    ##  *** third letter (optional): 
+    ##                     x - template  (for example - 'req_type'='rx', 'template'=>'(ddd)-ddd-dd-dd', where d - digit, c - character)
+    ##  *** third letter (optional):
     ##          for numbers: s - signed, u - unsigned, p - positive, n - negative
     ##          for strings: u - upper,  l - lower,    n - normal,   y - any
     ##          for telephone: m - mobile, f - fixed (stationary), i - international, y - any
     ##  *** Ex.: 'on_js_event'=>'onclick='alert(\'Yes!!!\');''
     ##  *** Ex.: type = textbox|textarea|label|date|datedmy|datemdy|datetime|datetimedmy|datetimemdy|time|image|password|enum|print|checkbox|blob|hidden|validator
-    ##  *** Format for date: yyyy-mm-dd, datedmy: dd-mm-yyyy, datemdy: mm-dd-yyyy, time: hh:mm:ss etc. 
+    ##  *** Format for date: yyyy-mm-dd, datedmy: dd-mm-yyyy, datemdy: mm-dd-yyyy, time: hh:mm:ss etc.
     ##  *** make sure your WYSIWYG directory has 755 access permissions
     ##  *** make sure uploading directories for files/images have 755 access permissions
     ##  *** to set up uploading directory for textarea, open modules\wysiwyg\addons\imagelibrary\config.inc.php and change $imagebasedir = 'images';
@@ -339,18 +354,18 @@
     ## | 8. Foreign Keys Settings:                                                 |
     ## +---------------------------------------------------------------------------+
     ##  *** set foreign keys for add/edit/details modes (if there are linked tables)
-    ##  *** Ex.: 'field_name'=>'CONCAT(field1, " ", field2) as field3' 
+    ##  *** Ex.: 'field_name'=>'CONCAT(field1, " ", field2) as field3'
     ##  *** Ex.: 'condition'=>'TableName_1.FieldName > "a" AND TableName_1.FieldName < "c"'
     ##  *** Ex.: 'on_js_event'=>'onclick="alert(\'Yes!!!\');"'
     /// $foreign_keys = array(
     ///     'ForeignKey_1'=>array('table'=>'TableName_1', 'field_key'=>'FieldKey_1', 'field_name'=>'FieldName_1', 'view_type'=>'dropdownlist(default)|radiobutton|textbox|label', 'elements_alignment'=>'horizontal|vertical', 'condition'=>'', 'order_by_field'=>'', 'order_type'=>'ASC|DESC', 'show_count'=>'', 'on_js_event'=>''),
     ///     'ForeignKey_2'=>array('table'=>'TableName_2', 'field_key'=>'FieldKey_2', 'field_name'=>'FieldName_2', 'view_type'=>'dropdownlist(default)|radiobutton|textbox|label', 'elements_alignment'=>'horizontal|vertical', 'condition'=>'', 'order_by_field'=>'', 'order_type'=>'ASC|DESC', 'show_count'=>'', 'on_js_event'=>'')
-    /// ); 
+    /// );
     /// $dgrid->SetForeignKeysEdit($foreign_keys);
     ##
-    ################################################################################   
-    
-    ################################################################################   
+    ################################################################################
+
+    ################################################################################
     ##
     ## Non-documented:
     ## -----------------------------------------------------------------------------
@@ -378,8 +393,8 @@
     ##  --//--   : forceFieldsLowercase     = true|false; defines whether to force using of lower case for field names
     ##  --//--   : printType                = 'old|new'; (private property) defines whether to use new type of printing
     ##  --//--   : drawTopButtons           = true|false; defines whether to show buttons at the top of the page (default - false)
-    ## 
-    ## METHOD    : ExecuteSQL() 
+    ##
+    ## METHOD    : ExecuteSQL()
     ##            Usage: a) must be defined after DataSource() method only (using this method before bind() requires redefinition of DataSource())
     ##                   b) $dSet->fetch() and $dSet->columnCount()
     ##    		  $dSet = $dgrid->ExecuteSQL('SELECT * FROM tblPresidents WHERE tblPresidents.CountryID = '.(int)$_GET['f_rid']);
@@ -409,8 +424,8 @@
     ##  --//--   : UseAbsolutePath(true|false);
     ##  --//--   : SetAutocommit(true|false); - 'autocommit' option for IBM db driver (must be placed after before DataSource())
     ##  --//--   : SetDbSchema('schema_name'); - database 'schema' option for IBM db driver (must be placed after before DataSource())
-    ##  --//--   : CloseConnection(); - force closing of database connection 
-    ##             
+    ##  --//--   : CloseConnection(); - force closing of database connection
+    ##
     ## FIELD ATTRIBUTES
     ##  --//--   : 'header_tooltip'   => '' - displays header tooltip in View/Add/Edit/Details modes
     ##  --//--   : 'header_tooltip_type' => 'simple|floating' - the type of header tooltip in View/Add/Edit/Details modes
@@ -426,7 +441,7 @@
     ##  --//--   : 'summarize_function' => 'SUM|AVG|MAX|MIN|SUM_TIME|DIFF|PERCENT_DIFF' defines aggregate function for certain field
     ##  --//--   : 'summarize_field_1' => '' and 'summarize_field_2' => '' - fields for aggregate functions: DIFF and PERCENT_DIFF
     ##  --//--   : ('req_type'='rx', 'template'=>'(ddd)-ddd-dd-dd', where d - digit, c - character) - template(mask) check type for fields in Add/Edit Mode
-    ##  --//--   : 'show_on_print'  => 'true|false' (default - 'true') defines whether to show field on printing  
+    ##  --//--   : 'show_on_print'  => 'true|false' (default - 'true') defines whether to show field on printing
     ##  --//--   : 'show_on_export' => 'true|false' (default - 'true') defines whether to show field on exporting
     ##  --//--   : 'movable'        => 'true|false' adds to column up/down arrows and allows to change row's order
     ##  --//--   : 'table_alias'    => '' defines table alias for filtering fields to prevent name overlapping
@@ -442,15 +457,15 @@
     ##                  if(document.getElementById('ryyfirst_name').value =='x'){
     ##                     alert('Please check ...  X is invalid!!!');
     ##                     return false;
-    ##                  }  
+    ##                  }
     ##                  return true;
-    ##      	      }	
+    ##      	      }
     ##      	   </script>
     ##  --//--   : 'on_js_event'=>'onchange="_dgFormAction(\'\', \'\', \''.$dgrid->uniquePrefix.'\', \''.$dgrid->HTTP_URL.'\', \''.$_SERVER['QUERY_STRING'].'\', \'post\', \''.$_REQUEST[$dgrid->uniquePrefix.'mode'].'\')"' - Allows reloading form in Add/Edit mode
     ##  --//--   : Bind(true|false) - draw DataGrid on the screen on not
     ##
     ################################################################################
-    
+
     ################################################################################
     ##
     ## Tricks:
@@ -473,7 +488,7 @@
     ##        if(strlen($field_value) > 5){
     ##            return '<span style="color:red">'.$field_value.'</span>';
     ##        }else{
-    ##            return '<span style="color:blue">'.$field_value.'</span>';        
+    ##            return '<span style="color:blue">'.$field_value.'</span>';
     ##        }
     ##      }
     ##
@@ -485,7 +500,7 @@
     ##            return '<span style="color:red">'.$field_value.'</span>';
     ##        }else{
     ##            $fp_type = 'linktoview';
-    ##            return '<span style="color:blue">'.$field_value.'</span>';        
+    ##            return '<span style="color:blue">'.$field_value.'</span>';
     ##        }
     ##      }
     ##
@@ -493,8 +508,8 @@
     ##    Then use $my_field = isset($_GET['prefix__ff__xxx']) ? $_GET['prefix__ff__xxx'] : '';
     ##    Use $my_field in SQL SELECT for your own filtering
     ##
-    ## 9. Passing parameters to Javascript function on 'on_js_event'=>'' for 'link' and 'label' fields 
-    ##    'field_key'=>'', 'field_key_1'=>'', 'on_js_event'=>'my_finction({0},{1})' 
+    ## 9. Passing parameters to Javascript function on 'on_js_event'=>'' for 'link' and 'label' fields
+    ##    'field_key'=>'', 'field_key_1'=>'', 'on_js_event'=>'my_finction({0},{1})'
     ##
     ################################################################################
 
@@ -512,16 +527,16 @@
 
 <body>
 <?php
-    ################################################################################   
+    ################################################################################
     ## +---------------------------------------------------------------------------+
-    ## | 9. Bind the DataGrid:                                                     | 
+    ## | 9. Bind the DataGrid:                                                     |
     ## +---------------------------------------------------------------------------+
     ##  *** bind the DataGrid and draw it on the screen
     ##  *** you may use $dgrid->Bind(false) and then $dgrid->Show() to separate
     ##  *** binding and displaying id datagrid
     //  $dgrid->Bind();
     //  ob_end_flush();
-    ################################################################################   
+    ################################################################################
 ?>
 </body>
 </html>
