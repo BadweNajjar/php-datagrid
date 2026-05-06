@@ -26,7 +26,7 @@ The library cleanly separates server-side code from browser-served assets:
 
 ```
 datagrid/
-├── src/                           ← server-side (PHP loads from disk)
+├── DataGrid/                      ← server-side (PHP loads from disk)
 │   ├── DataGrid.php               ← main class, namespace DataGrid\
 │   ├── Helper.php
 │   ├── SqlParser.php
@@ -63,10 +63,10 @@ Key idea:
 
 ## 2. Install into your CI4 application
 
-### a. Copy `src/` into your app's libraries
+### a. Copy the library folder into your app's libraries
 
 ```powershell
-Copy-Item -Recurse datagrid\src  <ci4>\app\Libraries\DataGrid\src
+Copy-Item -Recurse datagrid\DataGrid  <ci4>\app\Libraries\DataGrid
 ```
 
 ### b. Publish `public/` under your CI4 document root
@@ -86,8 +86,8 @@ After this step you should have:
 ### c. Make `tmp/` writable
 
 ```powershell
-icacls <ci4>\app\Libraries\DataGrid\src\tmp\cache  /grant "IIS_IUSRS:(OI)(CI)M"
-icacls <ci4>\app\Libraries\DataGrid\src\tmp\export /grant "IIS_IUSRS:(OI)(CI)M"
+icacls <ci4>\app\Libraries\DataGrid\tmp\cache  /grant "IIS_IUSRS:(OI)(CI)M"
+icacls <ci4>\app\Libraries\DataGrid\tmp\export /grant "IIS_IUSRS:(OI)(CI)M"
 ```
 
 ---
@@ -100,7 +100,7 @@ In `app/Config/Autoload.php`:
 public $psr4 = [
     APP_NAMESPACE => APPPATH,
     'Config'      => APPPATH . 'Config',
-    'DataGrid'    => APPPATH . 'Libraries/DataGrid/src',  // ← add this
+    'DataGrid'    => APPPATH . 'Libraries/DataGrid',  // ← add this
 ];
 ```
 
@@ -187,10 +187,10 @@ $routes->match(['get', 'post'], 'countries', 'Countries::index');
 
 The grid keeps two separate path properties for the `public/` folder:
 
-| Method                            | What it sets                        | Default                                   |
-|-----------------------------------|-------------------------------------|-------------------------------------------|
-| `SetPublicUrl($url)`              | browser URL prefix to `public/`     | `'public/'` (or `DATAGRID_DIR.'public/'`) |
-| `SetPublicPath($filesystemPath)`  | filesystem path to `public/`        | `<src>/../public/`                        |
+| Method                            | What it sets                        | Default                                          |
+|-----------------------------------|-------------------------------------|--------------------------------------------------|
+| `SetPublicUrl($url)`              | browser URL prefix to `public/`     | `'public/'` (or `DATAGRID_DIR.'public/'`)        |
+| `SetPublicPath($filesystemPath)`  | filesystem path to `public/`        | `<DataGrid>/../public/`                          |
 
 Typical CI4 usage:
 
@@ -247,10 +247,10 @@ $routes->group('examples', static function ($routes) {
 - All CSS, JavaScript, and bundled module assets that the browser fetches are
   served as ordinary static files from `public/`. They are **not** inlined.
   Theme CSS, language strings and the small `dg.*` runtime scripts under
-  `src/{styles,languages,js}/` are inlined by PHP and don't need to be
+  `DataGrid/{styles,languages,js}/` are inlined by PHP and don't need to be
   web-reachable.
-- `<src>/tmp/cache/` and `<src>/tmp/export/` must be writable by PHP (cached
-  language strings, generated exports).
+- `<DataGrid>/tmp/cache/` and `<DataGrid>/tmp/export/` must be writable by PHP
+  (cached language strings, generated exports).
 - File-upload examples ([Code29Example.php](examples/controllers/Code29Example.php))
   expect a writable `uploads/` directory; create one under `public/` and adjust
   the `SetFieldsEditPropertiesArray()` paths to match.

@@ -199,9 +199,9 @@ class DataGrid
 
     // directory ---------------------------------------------------------------
     /**
-     * Filesystem path to the library's `src/` folder, with trailing slash.
-     * All server-side resources (`languages/`, `js/`, `styles/`, `tmp/`) live here
-     * and are read directly from disk by PHP.
+     * Filesystem path to the library's `DataGrid/` folder, with trailing slash.
+     * All server-side resources (`languages/`, `js/`, `styles/`, `tmp/`,
+     * `modules/tfpdf/`) live here and are read directly from disk by PHP.
      */
     public $directory;
 
@@ -210,7 +210,7 @@ class DataGrid
      * Holds browser-served assets (`images/`, `modules/`, `scripts/`).
      * In a CI4 deployment, copy this folder into your application's
      * web-accessible document root and call `SetPublicPath()` if it sits
-     * somewhere other than `<src>/../public/`.
+     * somewhere other than `<DataGrid>/../public/`.
      */
     public $publicPath;
 
@@ -563,9 +563,10 @@ class DataGrid
         $this->securityLevel = 'medium'; // low|medium/high
 
         // directory -----------------------------------------------------------
-        // $this->directory  = filesystem path to the library's src/ folder.
+        // $this->directory  = filesystem path to the library's DataGrid/ folder.
         //                     Holds server-side resources: languages/, js/,
-        //                     styles/, tmp/. Read directly from disk by PHP.
+        //                     styles/, tmp/, modules/tfpdf/. Read directly from
+        //                     disk by PHP.
         // $this->publicPath = filesystem path to the library's public/ folder.
         //                     Holds browser-served assets: images/, modules/,
         //                     scripts/. Used for file_exists()/include checks.
@@ -1972,9 +1973,9 @@ class DataGrid
 
     /**
      * Set the filesystem path to the `public/` folder. Used internally for
-     * `file_exists()` checks and `include` of bundled modules (e.g. tFPDF).
-     * Only needed when the public folder is moved away from the default
-     * `<src>/../public/` location.
+     * `file_exists()` checks of bundled browser assets (`images/`, `modules/`,
+     * `scripts/`). Only needed when the public folder is moved away from the
+     * default `<DataGrid>/../public/` location.
      *
      * @param string $path Absolute filesystem path; trailing slash optional.
      */

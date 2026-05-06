@@ -37,13 +37,14 @@
     ## +---------------------------------------------------------------------------+
     ## | 1. Creating & Calling:                                                    |
     ## +---------------------------------------------------------------------------+
-    ##  *** Library layout (after Phase 10 restructure):
+    ##  *** Library layout:
     ##  ***   datagrid/
-    ##  ***   ├── src/        (server-side: PHP classes, languages, js, styles, tmp)
+    ##  ***   ├── DataGrid/   (server-side: PHP classes, languages, js, styles,
+    ##  ***   │              tmp, modules/tfpdf)
     ##  ***   └── public/     (browser-served: images, modules, scripts)
     ##  ***
     ##  *** Inside a CI4 app, register the PSR-4 namespace in app/Config/Autoload.php:
-    ##  ***   'DataGrid' => APPPATH.'Libraries/DataGrid/src',
+    ##  ***   'DataGrid' => APPPATH.'Libraries/DataGrid',
     ##  *** Then publish the public/ folder under your CI4 public/ document root
     ##  *** (e.g. <ci4>/public/datagrid/) and call:
     ##  ***   $dgrid->SetPublicUrl(base_url('datagrid'));
@@ -51,7 +52,7 @@
     ##  *** For non-CI4 standalone usage, define DATAGRID_DIR as the URL prefix
     ##  *** to the datagrid/ folder; the constructor will derive publicUrl from it.
     //  define('DATAGRID_DIR', 'datagrid/');         /* URL prefix; trailing slash required */
-    //  require_once(DATAGRID_DIR.'src/DataGrid.php');
+    //  require_once(DATAGRID_DIR.'DataGrid/DataGrid.php');
     //  use DataGrid\DataGrid;
     ##
     ##  *** CodeIgniter 4 is required. Inside a CI4 application, the framework

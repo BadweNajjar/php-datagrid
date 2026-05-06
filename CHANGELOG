@@ -1,7 +1,7 @@
 ======================================================================================
 --- Version 8.6.x (CodeIgniter 4 fork)
 ======================================================================================
-1. Feature: [added] PSR-4 namespace `DataGrid\*` under `datagrid/src/`
+1. Feature: [added] PSR-4 namespace `DataGrid\*` under `datagrid/DataGrid/`
 2. Feature: [added] native CodeIgniter 4 database layer integration
                     (`\Config\Database::connect()` auto-load in `DataSource()`)
 3. Feature: [added] `DataGrid\Database\Connection` bridge class
@@ -15,9 +15,10 @@
 8. Feature: [improved] collaborator classes split out under
                     `src/{Asset,Database,Export,Filter,Render,Security}/`
 9. Feature: [improved] folder layout split: server-side resources moved into
-                    `src/` (`languages/`, `js/`, `styles/`, `tmp/`), browser
-                    assets isolated under `public/` (`images/`, `modules/`,
-                    `scripts/`). Copy `public/` into the CI4 document root.
+                    `DataGrid/` (`languages/`, `js/`, `styles/`, `tmp/`,
+                    `modules/tfpdf/`), browser assets isolated under `public/`
+                    (`images/`, `modules/`, `scripts/`). Copy `public/` into
+                    the CI4 document root.
 1. Bug: [fixed] PHP8 syntax issues
 1. Removed: PDO support and `$dbType` PDO branch
 2. Removed: legacy adapters: oci, ibm, ibase, firebird, sybase, mssql, odbc
