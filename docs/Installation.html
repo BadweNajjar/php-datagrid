@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Installation of ApPHP DataGrid</title>
+    <title>Installation of PHP DataGrid</title>
     <style>
         BODY { padding:10px 20px 10px 20px; font-family: "Lucida Sans Unicode"; font-size: 14px; }
         IMG  { border:1px solid #cccccc; }
@@ -11,26 +11,32 @@
         SPAN.darkblue { color:darkblue; }
     </style>
 </head>
-<body>    
+<body>
+<div style="border:2px solid #2c7be5;background:#eaf2ff;padding:12px 18px;margin:0 0 18px 0;font-family:'Lucida Sans Unicode',Arial,sans-serif;font-size:13px;line-height:1.5;">
+<b style="color:#2c7be5;">CodeIgniter 4 fork</b><br>
+This build targets <b>PHP 7.4 / 8.x</b>, ships under the <code>DataGrid\</code> PSR-4 namespace from <code>datagrid/DataGrid/</code>, and uses the <b>CodeIgniter 4 database layer natively</b> (no PDO).<br>
+For installation, controller examples, and asset publishing see <a href="../README.md"><b>README.md</b></a>. Ready-to-paste CI4 controllers live in <a href="../examples/controllers/"><b>examples/controllers/</b></a>.<br>
+The legacy instructions below are kept for API reference and standalone (non-CI4) deployments.
+</div>
 
 <!-- last update 18.12.2013 -->
 <div class="box">
-<h1>Installation of ApPHP DataGrid</h1>
+<h1>Installation of PHP DataGrid</h1>
 <div class="holder">
 <div class="frame-box">
 
     <div class="blocks-holder blocks-subholder">
     <div class="block-long">
     <div class="text-box">
- 
+
         <ul style="padding-left:1px;list-style:none;font-size:14px;">
             <li>
-            <span>1.</span> <a href="Installation.html#Installation_of_PHP_DataGrid"> <span>Installation of ApPHP DataGrid</span></a> 
+            <span>1.</span> <a href="Installation.html#Installation_of_PHP_DataGrid"> <span>Installation of PHP DataGrid</span></a>
             <ul style="list-style:none;">
-                <li><span>1.1</span> <a href="Installation.html#Step_1._Uncompressing_downloaded_file."><span>Step 1. Uncompressing downloaded file.</span></a> 
-                <li><span>1.2</span> <a href="Installation.html#Step_2._Uploading_files."><span>Step 2. Uploading files.</span></a> 
-                <li><span>1.3</span> <a href="Installation.html#Step_3._Creating_database."><span>Step 3. Creating database.</span></a> 
-                <li><span>1.4</span> <a href="Installation.html#Step_4._Editing_some_important_values."><span>Step 4. Editing some important values.</span></a> 
+                <li><span>1.1</span> <a href="Installation.html#Step_1._Uncompressing_downloaded_file."><span>Step 1. Uncompressing downloaded file.</span></a>
+                <li><span>1.2</span> <a href="Installation.html#Step_2._Uploading_files."><span>Step 2. Uploading files.</span></a>
+                <li><span>1.3</span> <a href="Installation.html#Step_3._Creating_database."><span>Step 3. Creating database.</span></a>
+                <li><span>1.4</span> <a href="Installation.html#Step_4._Editing_some_important_values."><span>Step 4. Editing some important values.</span></a>
                 <li><span>1.5</span> <a href="Installation.html#Step_5._Renaming_code_template.php_file."><span>Step 5. Renaming code_template.php file.</span></a></li>
                 <li><span>1.6</span> <a href="Installation.html#Step_6._Additional_settings."><span>Step 6. Configure settings (optional).</span></a></li>
             </ul>
@@ -38,27 +44,26 @@
         </ul>
         <br>
 
-
     <a name=Installation_of_PHP_DataGrid></a>
-    <h3 class="sub-title">Installation of ApPHP DataGrid</h3>
+    <h3 class="sub-title">Installation of PHP DataGrid</h3>
     <br />
-    A new installation of ApPHP DataGrid is a very straight forward process
+    A new installation of PHP DataGrid is a very straight forward process
     <br />
-    
+
     <a name=Step_1._Uncompressing_downloaded_file.></a>
     <h3><b>Step 1. Uncompressing downloaded file.</b></h3>
     <hr>
-        Uncompress the ApPHP DataGrid script archive. The archive will create a directory called "PHPDG_xxx".
+        Uncompress the PHP DataGrid script archive. The archive will create a directory called "PHPDG_xxx".
         <p><br></p>
-    
+
     <a name=Step_2._Uploading_files.></a>
     <h3><B>Step 2. Uploading files.</b></h3>
         <hr>
-        Upload content of sub-directory <b>datagrid/</b> (all files and sub-directories it includes) to your 
+        Upload content of sub-directory <b>datagrid/</b> (all files and sub-directories it includes) to your
         document root (public_html, www, httpdocs etc.) using FTP.
-        <br><br>        
+        <br><br>
         <b>Pay attention:</b> DON&#39;T use the capital letters in the name of the folder (for Linux users).
-            
+
         <br>For example:
         <pre><span class="black">public_html/your_site/datagrid</span></pre>
         <p><br></p>
@@ -66,7 +71,7 @@
     <a name=Step_3._Creating_database.></a>
     <h3><B>Step 3. Creating database.</b></h3>
     <hr>
-		Using your hosting Control Panel, phpMyAdmin or another tool, create your database and user, and assign 
+		Using your hosting Control Panel, phpMyAdmin or another tool, create your database and user, and assign
 		that user to the database. Provide the user you created with required permissions to allow the user to
 		read, edit, execute and perform all tasks across all the databases and tables (SELECT, UPDATE, DELETE etc.).
 		Write down the name of the database, username, and password for the site installation procedure.
@@ -90,35 +95,33 @@ $DB_NAME='db_name';       </b></span><span class=green>/* usually like this: pre
         <b>SYNTAX (v7.0.0 or higher)</b>:
 <pre>
 <span class=green>/* Ex.: 'datagrid/' or '../datagrid/' */</span>
-<span class=darkblue><b>define ('DATAGRID_DIR', '');</b></span>                             
-<span class=darkblue><b>require_once(DATAGRID_DIR.'datagrid.class.php');</b></span>        
+<span class=darkblue><b>define ('DATAGRID_DIR', '');</b></span>
+<span class=darkblue><b>require_once(DATAGRID_DIR.'datagrid.class.php');</b></span>
 </pre>
         <p><br /></p>
-        
 
     <a name=Step_5._Renaming_code_template.php_file.></a>
     <h3><b>Step 5. Renaming code_template.php file.</b></h3>
     <hr>
         Rename <b>code_template.php</b> file according to your needs, such as <b>first_example.php</b> or any other
         and then type in your browser:
-        <pre><span class=black>http://your_site/datagrid/first_example.php</span></pre>        
+        <pre><span class=black>http://your_site/datagrid/first_example.php</span></pre>
         <p><br /></p>
 
-    
     <a name=Step_6._Additional_settings.></a>
     <h3><B>Step 6. Additional settings (optional).</b></h3>
     <hr>
         Set allow_call_time_pass_reference to true in your INI file.
         <br><br>
-        <b>Congratulations, you now have ApPHP DataGrid installed!</b>
+        <b>Congratulations, you now have PHP DataGrid installed!</b>
         <p><br /></p>
-    
+
     </div>
 	</div>
 	</div>
-    
-    <div class="frame-box-holder"></div>      
-		
+
+    <div class="frame-box-holder"></div>
+
 </div>
 </div>
 </div>

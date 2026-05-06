@@ -1,6 +1,6 @@
-﻿<html>
+<html>
 <head>
-    <title>Getting Started (for ApPHP DataGrid version 7.0.0 or above)</title>
+    <title>Getting Started (for PHP DataGrid version 7.0.0 or above)</title>
     <style>
         BODY { padding:10px 20px 10px 20px; font-family: "Lucida Sans Unicode"; font-size: 14px; }
         IMG  { border:1px solid #cccccc; }
@@ -11,18 +11,24 @@
         SPAN.darkblue { color:darkblue; }
     </style>
 </head>
-<body>    
+<body>
+<div style="border:2px solid #2c7be5;background:#eaf2ff;padding:12px 18px;margin:0 0 18px 0;font-family:'Lucida Sans Unicode',Arial,sans-serif;font-size:13px;line-height:1.5;">
+<b style="color:#2c7be5;">CodeIgniter 4 fork</b><br>
+This build targets <b>PHP 7.4 / 8.x</b>, ships under the <code>DataGrid\</code> PSR-4 namespace from <code>datagrid/DataGrid/</code>, and uses the <b>CodeIgniter 4 database layer natively</b> (no PDO).<br>
+For installation, controller examples, and asset publishing see <a href="../README.md"><b>README.md</b></a>. Ready-to-paste CI4 controllers live in <a href="../examples/controllers/"><b>examples/controllers/</b></a>.<br>
+The legacy instructions below are kept for API reference and standalone (non-CI4) deployments.
+</div>
 
 <!-- last update 09.09.2013 -->
 <div class="box">
-<h2>Getting Started with ApPHP DataGrid (for v7.0.0 or above)</h2>
+<h2>Getting Started with PHP DataGrid (for v7.0.0 or above)</h2>
 <div class="holder">
 <div class="frame-box">
 
     <div class="blocks-holder blocks-subholder">
     <div class="block-long">
     <div class="text-box">
- 
+
         <ul style="padding-left:1px;list-style:none;font-size:14px;">
             <li><span>1.</span> <a href="GettingStarted.html#Common_Notices"><span>Common Notices</span></a>
                 <ul style="list-style:none;">
@@ -43,9 +49,9 @@
                     <li><span>2.9</span> <a href="GettingStarted.html#Step_9._Bind_the_DataGrid."><span>Step 9. Bind the DataGrid.</span></a> </li>
                 </ul>
             </li>
-            <li><span>3.</span> <a href="GettingStarted.html#Not_documented_features_and_functions."><span>Non-Documented features and methods.</span></a> 
+            <li><span>3.</span> <a href="GettingStarted.html#Not_documented_features_and_functions."><span>Non-Documented features and methods.</span></a>
                 <ul style="list-style:none;">
-                    <li><span>3.1</span> <a href="GettingStarted.html#Properties"><span>Properties.</span></a></li> 
+                    <li><span>3.1</span> <a href="GettingStarted.html#Properties"><span>Properties.</span></a></li>
                     <li><span>3.2</span> <a href="GettingStarted.html#Methods"><span>Methods.</span></a> </li>
                     <li><span>3.3</span> <a href="GettingStarted.html#Attributes"><span>Attributes.</span></a> </li>
                     <li><span>3.4</span> <a href="GettingStarted.html#Features"><span>Features.</span></a></li>
@@ -53,15 +59,14 @@
             </li>
             <li><span>4.</span> <a href="GettingStarted.html#Tricks."><span>Some Tricks.</span></a>
                 <br>
-            </li>                
+            </li>
         </ul>
         <br /><br />
 
-    
     <a name=Common_Notices></a>
     <h3 class="sub-title"><b>Common Notices</b></h3>
-    
-    <a name=Syntax.></a>    
+
+    <a name=Syntax.></a>
     <h3><b>Syntax.</b></h3>
     <hr>
         We use<br>
@@ -79,12 +84,10 @@
         <span class=darkred>&#8226; <b>Be careful when using the names of fields they may be case sensitive.</b></span><br />
         <span class=darkred>&#8226; <b>For the best performance use ob_start(); before and ob_end_flush(); after DataGrid code.</b></span></p>
         <p><br /><br /></p>
-        
-
 
     <a name=GettingStarted></a>
     <h3 class="sub-title"><b>Getting Started</b></h3>
-    
+
     <a name=Step_1._Creating_and_Calling.></a>
     <h3><b>Step 1. Creating &amp; Calling.</b></h3>
     <hr>
@@ -102,38 +105,38 @@ $DB_PASS='user_password'; </b></span><span class=green>/* don't use empty passwo
 $DB_HOST='localhost';     </b></span><span class=green>/* usually localhost                        */</span><span class=darkblue><b>
 $DB_NAME='db_name';       </b></span><span class=green>/* usually like this: prefix_dbName         */</span></pre>
 
-    Create the a new instance of class and link the DataGrid class to our 
-    database. We can add a unique prefix (optional) to our datagrid if we want to 
-    prevent using of double names on this page (in case, when you use some datagrids 
+    Create the a new instance of class and link the DataGrid class to our
+    database. We can add a unique prefix (optional) to our datagrid if we want to
+    prevent using of double names on this page (in case, when you use some datagrids
     or forms on same page).
-    
+
 <pre wrap><span class=green>## *** set all needed options and create a new instance of class </span>
-<span class=green>// display SQL statements while processing</span> 
+<span class=green>// display SQL statements while processing</span>
 <span class=darkblue><b>$debug_mode = false;</b></span>
-<span class=green>// display system messages on a screen</span>     
+<span class=green>// display system messages on a screen</span>
 <span class=darkblue><b>$messaging = true;</b></span>
 <span class=green>// prevent overlays - must be started with a letter</span>
 <span class=darkblue><b>$unique_prefix = 'abc_';</b></span>
 <span class=darkblue><b>
 $dgrid = new DataGrid($debug_mode, $messaging, $unique_prefix);</b></span></pre>
 
-    We need to prepare the SELECT SQL statement for View Mode. It can be any type of 
-    SELECT statement your database supports (with JOIN, UNION etc.), but you must 
-    put the primary key on the first place. Also be careful to write all fields you 
-    need them to be shown, because the DataGrid class works with only on fields that 
+    We need to prepare the SELECT SQL statement for View Mode. It can be any type of
+    SELECT statement your database supports (with JOIN, UNION etc.), but you must
+    put the primary key on the first place. Also be careful to write all fields you
+    need them to be shown, because the DataGrid class works with only on fields that
     you placed in SELECT statement.<br>
     <b>Don't add here ORDER BY, LIMIT words or&nbsp;; at the end of the statement.</b><br>
     <b><span class=darkred>PRIMARY KEY MUST BE AUTO-INCREMENT NUMERIC!</span></b>
 <pre wrap><span class=green>## *** put a primary key on the first place </span>
 <span class=darkblue><b>$sql = 'SELECT primary_key, filed_1, filed_2 ... FROM tableName ';</b></span></pre>
 
-    Now we need to set data source to the DataGrid. We may define default columns 
-    ordering, by writing an appropriate fields in <b>$default_order</b> array (you can 
+    Now we need to set data source to the DataGrid. We may define default columns
+    ordering, by writing an appropriate fields in <b>$default_order</b> array (you can
     write some fields) and a sorting type.<br />
     Example #1: <b>$default_order = array('Region'=>'ASC', 'CountryID'=>'DESC');</b><br />
     Example #2: <b>$default_order = array('right(Region,1)'=>'ASC', 'Country'=>'DESC');</b>
     <br />
-    
+
 <pre wrap><span class=green>## *** set data source with needed options</span>
 <span class=green>// make default(first) ordering by this field</span>
 <span class=darkblue><b>$default_order = array();</b></span>
@@ -141,8 +144,6 @@ $dgrid = new DataGrid($debug_mode, $messaging, $unique_prefix);</b></span></pre>
 <span class=darkblue><b>$dgrid->DataSource('PDO', 'mysql', $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS, $sql, $default_order);</b></span></pre>
     <p><br /><br /></p>
 
-
-    
     <a name=Step_2._General_Settings.></a>
     <h3><b>Step 2. General Settings.</b></h3>
     <hr>
@@ -160,16 +161,16 @@ $dgrid->SetPostBackMethod($postback_method);</b></span></pre>
 <span class=green>## *** delete all caching pages</span>
 <span class=green><b>/// $dgrid->DeleteCache();</b></span></pre>
 
-    If you want to use a local language (not English) - you have to set the right 
-    encoding. <STRONG>The database, tables and appropriate fields in your database 
-    must be created with the same CHARACTER SET and COLLATE too.</STRONG> Also you 
-    need to define in your file: <STRONG>header('Content-type: text/html; 
-    charset=XXXX');</STRONG> where xxxx ISO-8859-1 or UTF-8 or whatever you 
-    have.<br />Example: CHARSET=utf8 COLLATE=utf8_unicode_ci<br />Example: &lt;meta 
+    If you want to use a local language (not English) - you have to set the right
+    encoding. <STRONG>The database, tables and appropriate fields in your database
+    must be created with the same CHARACTER SET and COLLATE too.</STRONG> Also you
+    need to define in your file: <STRONG>header('Content-type: text/html;
+    charset=XXXX');</STRONG> where xxxx ISO-8859-1 or UTF-8 or whatever you
+    have.<br />Example: CHARSET=utf8 COLLATE=utf8_unicode_ci<br />Example: &lt;meta
     http-equiv=Content-Type content="text/html; charset=UTF-8"&gt;
 
 <pre wrap><span class=green>## *** set encoding (default - utf8)</span><span class=darkblue><b>
-$dg_encoding = 'utf8'; 
+$dg_encoding = 'utf8';
 $dgrid->SetEncoding($dg_encoding);</b></span></pre>
 
     Set interface language for DataGrid (en - default). All supported languages are listed under commented lines.
@@ -178,15 +179,15 @@ $dgrid->SetEncoding($dg_encoding);</b></span></pre>
 ## *** (ar) - Arabic     (bg) - Bulgarian      (ca) - Catala
 ## *** (ch) - Chinese    (cz) - Czech          (da) - Danish
 ## *** (de) - German     (en) - English        (es) - Espanol
-## *** (fi) - Finnish, Suomi   (fr) - Francais (gk) - Greek     
+## *** (fi) - Finnish, Suomi   (fr) - Francais (gk) - Greek
 ## *** (he) - Hebrew     (hr) - Bosnian/Croatian (hu) - Hungarian
-## *** (it) - Italian    (ja) - Japanese       (ko) - Korean 
-## *** (lt) - Lithuanian (nl) - Netherlands/"Vlaams"(Flemish)    
-## *** (pl) - Polish     (pb) - Brazilian Portuguese             
-## *** (ro) - Romanian   (ru) - Russian        (sv) - Swedish        
+## *** (it) - Italian    (ja) - Japanese       (ko) - Korean
+## *** (lt) - Lithuanian (nl) - Netherlands/"Vlaams"(Flemish)
+## *** (pl) - Polish     (pb) - Brazilian Portuguese
+## *** (ro) - Romanian   (ru) - Russian        (sv) - Swedish
 ## *** (sr) - Serbian    (th) - Thai           (tr) - Turkish
 ## *** (pt) - Portuguese</span><span class=darkblue><b>
-$dg_language = 'en';  
+$dg_language = 'en';
 $dgrid->SetInterfaceLang($dg_language);</b></span></pre>
 
     Option for some right-to-left languages (Hebrew, Arabic etc.)
@@ -197,18 +198,18 @@ $dgrid->SetDirection($direction);</b></span></pre>
     Set layouts for datagrid in view or edit mode and for the filtering block. <br>
     <span class=darkred>Attention: use <b>'view'=>0, 'edit'=>0</b> only for cases when order of fields is the same both in view and edit modes !!!</span><br>
     For Details Mode there are only 2 types of layouts: '1' or '2'
-    
+
 <pre wrap><span class=green>## *** datagrid layouts: '0' - tabular(horizontal) - default, '1' - columnar(vertical), '2' - customized
 ## *** use 'view'=>'0' and "edit"=>"0" only if you work on the same tables
 ## *** filter layouts: '0' - tabular(horizontal) - default, '1' - columnar(vertical), '2' - advanced(inline)</span><span class=darkblue><b>
-$layouts = array('view'=>0, 'edit'=>1, 'filter'=>1); 
+$layouts = array('view'=>0, 'edit'=>1, 'filter'=>1);
 $dgrid->SetLayouts($layouts);</b></span></pre>
 
     Set templates for datagrid in view/edit or detail modes.<br />
     <b>{field_name_1}|{field_name_2} etc.</b> - will be replaced with appropriate field<br />
     <b>@field_name_1@|@field_name_2@</b> - will be replaced with column header that allows sorting<br />
     <b>[ADD],[CREATE],[EDIT],[DELETE],[BACK],[CANCEL],[UPDATE],[MULTIROW_CHECKBOX] or [ROWS_NUMERATION]</b> - allowed elements and operations (must be placed in $template['body'] only)<br />
-    
+
 <pre wrap><span class=darkblue><b>$view_mode_template = array('header'=>'', 'body'=>'', 'footer'=>'');
 $edit_mode_template = array('header'=>'', 'body'=>'', 'footer'=>'');
 $details_template = array('header'=>'', 'body'=>'', 'footer'=>'');
@@ -216,14 +217,13 @@ $details_template['body'] = '&lt;table&gt;&lt;tr&gt;&lt;td&gt;{field_name_1}&lt;
 $details_template['footer'] = 'html here...';
 $dgrid->SetTemplates($view_mode_template, $edit_mode_template, $details_template);</b></span></pre>
 
-
-    Set various modes for datagrid. <b>true</b> - allow the operation in this 
-    mode('view' or 'edit'), <b>false</b> - don't allow. <b>type</b> - a type of 
-    command button (link, html button or image). <b>byFieldValue</b> - if you want 
-    to make this field to be a link to edit mode page (instead of edit button), 
-    write here a name of the field. If you want to use a standart edit command 
+    Set various modes for datagrid. <b>true</b> - allow the operation in this
+    mode('view' or 'edit'), <b>false</b> - don't allow. <b>type</b> - a type of
+    command button (link, html button or image). <b>byFieldValue</b> - if you want
+    to make this field to be a link to edit mode page (instead of edit button),
+    write here a name of the field. If you want to use a standart edit command
     button leave this parameter empty: <b>'byFieldValue'=>''</b>
-    
+
 <pre wrap><span class=green>## *** set modes for operations ('type' = 'link|button|image'),
 ## *** 'view' - view mode | 'edit' - add/edit/details modes
 ## *** ('byFieldValue' - make the field as a link to edit mode page)
@@ -243,20 +243,20 @@ $scrolling_option = false;
 $dgrid->AllowScrollingSettings($scrolling_option);</b></span>
 <span class=green><b>
 ## *** set scrolling settings (optional)</b></span><span class=darkblue><b>
-$scrolling_height = '200px'; 
+$scrolling_height = '200px';
 $dgrid->SetScrollingSettings($scrolling_height);</b></span></pre>
 
     If you want to allow multirow operations for DataGrid, set <b>$multirow_option = true;</b>
-    
+
 <pre wrap><span class=green><b>## *** allow multirow operations</b></span><span class=darkblue><b>
 $multirow_option = true;
 $multirow_view_type = 'icons'; <span class=green>/* optional - 'icons' or 'dropdownlist' */</span>
 $dgrid->AllowMultirowOperations($multirow_option, $multirow_view_type);</b></span></pre>
 
-    You can work with embedded multi-row operations: delete/details or define 
-    your own operation, like in example below. Number of operations, that you may 
+    You can work with embedded multi-row operations: delete/details or define
+    your own operation, like in example below. Number of operations, that you may
     define - is not limited.
-    
+
 <pre wrap><span class=darkblue><b>$multirow_operations = array(
   'edit'    => array('view'=>true),
   'details' => array('view'=>true),
@@ -264,15 +264,15 @@ $dgrid->AllowMultirowOperations($multirow_option, $multirow_view_type);</b></spa
   'delete'  => array('view'=>true),
   'exchange' => array('view'=>false,  'fields'=>array('field1', 'field2')),
   'my_operation_name' =>
-     array('view'=>true, 
-           'flag_name'=>'my_flag_name', 
-           'flag_value'=>'my_flag_value', 
-           'tooltip'=>'Do something with selected', 
+     array('view'=>true,
+           'flag_name'=>'my_flag_name',
+           'flag_value'=>'my_flag_value',
+           'tooltip'=>'Do something with selected',
            'image'=>'image.gif')
 );
 $dgrid->SetMultirowOperations($multirow_operations);  </b></span></pre>
 
-    Set CSS parameters for the datagrid. If you want to use your own css class - 
+    Set CSS parameters for the datagrid. If you want to use your own css class -
     create folder with needed images in <b>images/YOUR_NEW_CSS/</b> and <b>YOUR_NEW_CSS.css</b> file
     in <b>CSS/</b> folder. <br>
 
@@ -280,21 +280,21 @@ $dgrid->SetMultirowOperations($multirow_operations);  </b></span></pre>
 
 <pre wrap><span class=green><b>## *** set CSS class for datagrid
 ## *** 'default|blue|gray|green|pink|empty|x-blue|x-gray|x-green' or your own css style</b></span><span class=darkblue><b>
-$css_class = 'default'; 
+$css_class = 'default';
 $dgrid->SetCssClass($css_class);</b></span></pre>
-    
+
     Set variables that you use to get access to your page or have passed from the previous page/s.
-    
+
 <pre wrap><span class=green><b>## *** set variables that used to get access to the page
 ## *** (like: my_page.php?act=34&amp;id=56 etc.)  </b></span><span class=darkblue><b>
 $http_get_vars = array('act', 'id');
 $dgrid->SetHttpGetVars($http_get_vars);</b></span></pre>
 
-    If you want to use some ApPHP DataGrid on your page, you need to define other 
-    datagrids unique prefixes to allow each datagrid to detect others. You need to 
-    define in which mode (view/edit/details) the current datagrid will recognize 
+    If you want to use some PHP DataGrid on your page, you need to define other
+    datagrids unique prefixes to allow each datagrid to detect others. You need to
+    define in which mode (view/edit/details) the current datagrid will recognize
     others.
-    
+
 <pre wrap><span class=green><b>## *** set other datagrid/s unique prefixes
 ## *** (if you use few datagrids on the one page)
 ## *** format (in wich mode to allow processing of other datagrids)
@@ -303,25 +303,24 @@ $otherGrids = array('abcd_'=>array('view'=>true, 'edit'=>true, 'details'=>true))
 $dgrid->SetOtherDatagrids($otherGrids);  </b></span></pre>
 
     Set datagrid title (caption).
-    
+
 <pre wrap><span class=green><b>## *** set DataGrid Caption</b></span><span class=darkblue><b>
-$dg_caption = 'My Favorite Lovely ApPHP DataGrid';
+$dg_caption = 'My Favorite Lovely PHP DataGrid';
 $dgrid->SetCaption($dg_caption);</b></span></pre>
     <p><br /><br /></p>
-    
-    
+
     <a name=Step_3._Printing_.26_Exporting_Settings.></a>
     <h3><b>Step 3. Printing &amp; Exporting Settings.</b></h3>
     <hr>
-    
+
     If you want to allow users to view printer-friendly pages and print them - set printing as true.
-    
+
 <pre wrap><span class=green><b>## *** set printing option: true(default) or false </b></span><span class=darkblue><b>
 $printing_option = true;
 $dgrid->AllowPrinting($printing_option); </b></span></pre>
 
     If you want to allow users to export datagrid data - set exporting as true and define exporting directory.
-    
+
 <pre wrap><span class=green><b>## *** initialize the session with session_start();
 ## *** default exporting directory (requires write permissions): tmp/export/</b></span><span class=darkblue><b>
 $exporting_option = true;
@@ -333,22 +332,21 @@ $exporting_types = array(
 $dgrid->AllowExportingTypes($exporting_types);
 </b></span></pre>
     <p><br /><br /></p>
-    
 
     <a name=Step_4._Sorting_.26_Paging_Settings.></a>
     <h3><b>Step 4. Sorting &amp; Paging Settings.</b></h3>
     <hr>
 
     Set sorting option as true, if you want to allow sorting on columns.
-    
+
 <pre wrap><span class=green><b>## *** set sorting option: true(default) or false </b></span><span class=darkblue><b>
 $sorting_option = true;
 $dgrid->AllowSorting($sorting_option);</b></span></pre>
 
-    Set paging option as true, if you want to allow paging on datagrid. If you 
+    Set paging option as true, if you want to allow paging on datagrid. If you
     want to add a column with rows numeration - set <b>$rows_numeration</b> as true. If you want
     to allow paging by selecting page from dropdown box - set <b>$dropdown_paging</b> as true.
-    
+
 <pre wrap><span class=green><b>## *** set paging option: true(default) or false </b></span><span class=darkblue><b>
 $paging_option = true;
 $rows_numeration = false;
@@ -356,21 +354,21 @@ $numeration_sign = 'N #';
 $dropdown_paging = false;
 $dgrid->AllowPaging($paging_option, $rows_numeration, $numeration_sign, $dropdown_paging);</b></span></pre>
 
-    Set additional paging settings. <br /><b>$top_paging</b> or 
-    <b>$bottom_paging</b> - both define paging (top and bottom) behaviour. We have 
-    three parts of the paging line (left, center, right): <i>results</i>, 
-    <i>pages</i> and <i>page size</i> dropdownbox. You need to set parameters for 
-    each of them. If you don't want to show any of them or all of them - leave it 
-    empty Ex.: <b>$bottom_paging = array()</b> or <b>$bottom_paging = 
-    array('results'=>true, 'results_align'=>'left');</b>. <br />If you want to 
-    define your own dropdown box with page sizes - you can make it in 
-    <b>$pages_array array</b> - see example below or leave it empty. Also you can 
+    Set additional paging settings. <br /><b>$top_paging</b> or
+    <b>$bottom_paging</b> - both define paging (top and bottom) behaviour. We have
+    three parts of the paging line (left, center, right): <i>results</i>,
+    <i>pages</i> and <i>page size</i> dropdownbox. You need to set parameters for
+    each of them. If you don't want to show any of them or all of them - leave it
+    empty Ex.: <b>$bottom_paging = array()</b> or <b>$bottom_paging =
+    array('results'=>true, 'results_align'=>'left');</b>. <br />If you want to
+    define your own dropdown box with page sizes - you can make it in
+    <b>$pages_array array</b> - see example below or leave it empty. Also you can
     define default page size in <b>$default_page_size</b> variable.
-    
+
 <pre wrap><span class=green><b>## *** set paging settings </b></span><span class=darkblue><b>
 $bottom_paging = array(
-    'results'=>true, 'results_align'=>'left', 
-    'pages'=>true, 'pages_align'=>'center', 
+    'results'=>true, 'results_align'=>'left',
+    'pages'=>true, 'pages_align'=>'center',
     'page_size'=>true, 'page_size_align'=>'right');
 $top_paging = array(
     'results'=>true, 'results_align'=>'left',
@@ -385,14 +383,13 @@ $paging_arrows = array(
 );
 $dgrid->SetPagingSettings($bottom_paging, $top_paging, $pages_array, $default_page_size);</b></span></pre>
     <p><br /><br /></p>
-    
 
     <a name=Step_5._Filter_.28search.29_Settings.></a>
     <h3><b>Step 5. Filter (search) Settings.</b></h3>
     <hr>
 
     If you want to allow a filtering mode, set $filtering_option as true.
-    
+
 <pre wrap><span class=green><b>## *** set filtering option: true or false(default)
 ## *** tips: use ',' (comma) if you want to make search by some words, for ex.: hello, bye, hi</b></span><span class=darkblue><b>
 $filtering_option = true;
@@ -405,10 +402,10 @@ $dgrid->AllowFiltering($filtering_option);</b></span></pre>
     <b>'filter_condition'=>''</b> - additional conditions on filtering field (Ex.: 'AND LENGTH(last_name) > 3')<br />
     <b>'source'=>'self'|$fill_from_array</b> - take values for filtering field (dropdown list) from the specific array or not<br />
     Example:
-    
+
 <pre wrap><span class=darkblue><b>$fill_from_array = array('0'=>'No', '1'=>'Yes');</b></span></pre>
 
-    <u>Common</u>:<br />    
+    <u>Common</u>:<br />
     <b>'operator'=>false|true</b> - draw comparison operators dropdown list or not<br />
     <b>'order'=>'ASC|DESC'</b> - dropdown list values order (optional)<br />
     <b>'type'=>'textbox|dropdownlist|calendar'</b> - view type of filtering filed (textbox - default)<br />
@@ -427,21 +424,20 @@ $dgrid->AllowFiltering($filtering_option);</b></span></pre>
     <b>'field_type'=>''</b> - (optional) if you want to perform rage search, you need to define them separately.
                               For example: 'field_type'=>'from' and 'field_type'=>'to' each field
     <br /><br />
-        
-    <u>For the 'enum' type</u>:<br />    
+
+    <u>For the 'enum' type</u>:<br />
     <b>'field_view'=>''</b> - field, that will be shown in dropdownlist:
-                           'field_view'=>'field2' or 
+                           'field_view'=>'field2' or
                            'field_view'=>'CONCAT(field1, ",", field2) as field3' or 'field_view'=>'"link" as field3'<br />
     <b>'view_type'=>'dropdownlist(default)|radiobutton'</b> - view type of the field<br />
     <b>'show_count'=>''</b> - true or false, shows amount of filtering items, like: members (8)
-    <br /><br />    
-    
+    <br /><br />
+
     <u>For the 'calendar' type</u>:<br />
     <b>'date_format'=>''</b> - ('date' or 'datedmy', 'datetime' or 'time') defines date format for calendar field<br />
     <b>'calendar_type'=>''</b> - ('popup' or 'floating') defines calendar view type
     <br />
 
-    
 <div style="width:676px;height:195px;overflow:auto;background-color:#f3f3f3;border:1px solid #dadada;">
 <pre style="border:0px;margin:0px;display:block;width:4500px;"><span class=green><b>## *** set additional filtering settings</b></span><span class=darkblue><b>
 $filtering_fields = array(
@@ -456,18 +452,17 @@ $dgrid->SetFieldsFiltering($filtering_fields);</b></span></pre>
     <br>If you want to allow using of default filtering, set AllowDefaultFiltering(true)
     method. Using of this method means, that datagrid will be opened on default
     view with this filtering settings.
-    
+
 <pre wrap><span class=green><b>## *** allow default filtering: default - false</b></span>
 <span class=darkblue><b>$default_filtering_option = true;</b></span>
 <span class=darkblue><b>$dgrid->AllowDefaultFiltering($default_filtering_option);</b></span></pre>
     <p><br /><br /></p>
-    
 
     <a name=Step_6._View_Mode_Settings.></a>
     <h3><b>Step 6. View Mode Settings.</b></h3>
     <hr>
     Set some properties for view mode table
-    
+
 <pre wrap><span class=green><b>## *** set table properties</b></span>
 <span class=darkblue><b>$vm_table_properties = array('width'=>'90%');
 $dgrid->SetViewModeTableProperties($vm_table_properties); </b></span></pre>
@@ -487,7 +482,7 @@ $dgrid->SetViewModeTableProperties($vm_table_properties); </b></span></pre>
     <b>'summarize'=>...</b> - summarize values in this column (true or false)<br />
     <b>'on_js_event'=>'...'</b> - javascript code or js function on some event. Example: onClick(alert('Clicked!'))
     <br /><br />
-    
+
     <u>For the 'link' type</u>:<br />
     <b>'field_key'=>'field_name_0'|'field_key_1'=>'field_name_1'|...,</b> - field for href parameter in &lt;a href='...field_key_x...'&gt;<br />
     <b>'field_data'=>'...',</b> - field for &lt;a href=''&gt;field_data</a><br />
@@ -518,11 +513,11 @@ $dgrid->SetViewModeTableProperties($vm_table_properties); </b></span></pre>
     <b>'field'=>'...'</b> - filed name<br />
     <b>'maximum_value'=>'...'</b> maximal value for the chart. Number format in SELECT SQL must be equal with number format in max_value.<br />
     <b>'value_sign'=>''</b> - sign that will be displayed near the barchart
-    <b>'minimum_color'=>'', 'minimum_value'=>''</b> - minimum color and value   
-    <b>'middle_color'=>'', 'middle_value'=>''</b> - middle color and value  
+    <b>'minimum_color'=>'', 'minimum_value'=>''</b> - minimum color and value
+    <b>'middle_color'=>'', 'middle_value'=>''</b> - middle color and value
     <b>'maximum_color'=>'', 'maximum_value'=>'100'</b> - maximum color and value
     <br /><br />
-    
+
     <u>For the 'enum' type</u>:<br /><b>'source'=>'...'</b> - source for enum type. Possible values: user's pre-defined array
     <br /><br />
 
@@ -569,20 +564,18 @@ $vm_columns = array(
 $dgrid->SetColumnsInViewMode($vm_columns);</b></span></pre>
 </div>
 
-    <br />If you want to get auto-generated columns - set 
+    <br />If you want to get auto-generated columns - set
     <b>$auto_column_in_view_mode</b> as true.
-    
-    
+
 <pre wrap><span class=green><b>## *** set auto-generated columns in view mode</b></span><span class=darkblue><b>
 $auto_column_in_view_mode = false;
 $dgrid->SetAutoColumnsInViewMode($auto_column_in_view_mode);</b></span></pre>
     <p><br /><br /></p>
-    
 
     <a name=Step_7._Add.2FEdit.2FDetails_Mode_Settings.></a>
     <h3><b>Step 7. Add/Edit/Details Mode Settings. </b></h3>
-    <hr>    
-    
+    <hr>
+
     Set properties for edit mode table.
 <pre wrap><span class=green><b>## *** set add/edit mode table properties</b></span><span class=darkblue><b>
 $em_table_properties = array('width'=>'70%');
@@ -595,12 +588,12 @@ $dm_table_properties = array('width'=>'70%');
 $dgrid->SetDetailsModeTableProperties($dm_table_properties);</b></span></pre>
 
     Set settings for add/edit/details modes.
-    
+
 <pre wrap><span class=green><b>## ***  set settings for add/edit/details modes
 // Table for adding and editing</b></span>
 <span class=darkblue><b>$table_name  = 'table_name';</b></span>
 <span class=green><b>// Primary key for this table</b></span><span class=darkblue><b>
-$primary_key = 'primary_key';</b></span> 
+$primary_key = 'primary_key';</b></span>
 <span class=green><b>// Condition. Ex.: table_name.field = 'xxx'</b></span>
 <span class=darkblue><b>$condition = '';
 $dgrid->SetTableEdit($table_name, $primary_key, $condition);</b></span></pre>
@@ -610,13 +603,13 @@ $dgrid->SetTableEdit($table_name, $primary_key, $condition);</b></span></pre>
     <b>'header'=>'...'</b> - name of the column's header<br />
     <b>'type'=>'...'</b> - type of the column. <br />
 
-<pre wrap>Possible values: 
-textbox,          textarea, 
-label,            password,  
+<pre wrap>Possible values:
+textbox,          textarea,
+label,            password,
 print,            datemdy(mm-dd-yyyy),
-enum,             date(yyyy-mm-dd), 
-image,            datedmy(dd-mm-yyyy), 
-checkbox,         datetime(yyyy-mm-dd hh:mm:ss), 
+enum,             date(yyyy-mm-dd),
+image,            datedmy(dd-mm-yyyy),
+checkbox,         datetime(yyyy-mm-dd hh:mm:ss),
 file,             datetimedmy(dd-mm-yyyy hh:mm:ss),
 time(hh:mm:ss),   datetimemdy(mm-dd-yyyy hh:mm:ss),
 delimiter,        link (http://, mailto:, ftp://),
@@ -624,25 +617,25 @@ hidden</pre>
 
     <b>'req_type'=>'...'</b> - field parameters:<br />
 
-<pre wrap>first letter: 
+<pre wrap>first letter:
     r - required,      s - simple (not required)
-second letter: 
-    t - text(including datetime), 
+second letter:
+    t - text(including datetime),
     n - numeric,       a - alphabetic,    e - email,
-    f - float,         l - login name,    p - password, 
-    y - any(generally used for foreign languages),           
-    z - zipcode,       i - integer,       v - verified, 
+    f - float,         l - login name,    p - password,
+    y - any(generally used for foreign languages),
+    z - zipcode,       i - integer,       v - verified,
     u - URL,           s - SSN number,    m - telephone,
-    b - alphanumeric   c - checked (checkboxes),  r - checked (radiobuttons) 
-    x - template,      
-    (for example - 'req_type'='rx', 'template'=>'(ddd)-ddd-dd-dd'    
+    b - alphanumeric   c - checked (checkboxes),  r - checked (radiobuttons)
+    x - template,
+    (for example - 'req_type'='rx', 'template'=>'(ddd)-ddd-dd-dd'
     where d - digit, c - character)
-third letter (optional): 
+third letter (optional):
     for numbers: s - signed, u - unsigned, p - positive, n - negative
     for strings: u - upper,  l - lower,    n - normal,   y - any </pre>
 
     <b>'align'=>'...'</b> - field horizontal align<br />
-    
+
 <pre wrap>Possible values: left, center, right</pre>
 
     <b>'width'=>'...'</b> - width of the field in pixels<br />
@@ -669,24 +662,24 @@ third letter (optional):
     <b>'file_name'=>'...'</b> - set new name for image or use an original file name<br />
     <b>'max_file_size'=>'...'</b> - maximal image size allowed. Ex.: 1000, 10K, 1.2M or 1G<br />
     <b>'image_width'=>'...'</b> - viewing width of image<br />
-    <b>'image_height'=>'...'</b> - viewing height of image<br />    
+    <b>'image_height'=>'...'</b> - viewing height of image<br />
     <b>'resize_image'=>''</b> - (true or false) allows resizing of images<br />
     <b>'resize_dir'=>''</b> - specifies a direction of resizing ('down', 'up' or 'both')<br />
     <b>'resize_width'=>''</b> - (Xpx) set new width of resized images (leave blank if you want to save aspect ratio by height)<br />
-    <b>'resize_height'=>''</b> - (Xpx) set new height of resized images (leave blank if you want to save aspect ratio by width)<br />    
+    <b>'resize_height'=>''</b> - (Xpx) set new height of resized images (leave blank if you want to save aspect ratio by width)<br />
     <b>'magnify'=>''</b> - (true or false) allow magnifying of images<br />
     <b>'magnify_type'=>''</b> - ('popup', 'magnifier' or 'lightbox') defines a type of magnifying<br />
     <b>'magnify_power'=>'2'</b> - number, that defines a power of magnifying<br />
     <b>'allow_downloading'=>''</b> - (true or false) allows downloading image in Details Mode<br />
     <b>'allowed_extensions'=>''</b> - comma separated list of allowed extensions for uploaded files<br />
     <b>'allow_image_updating'=>'false'</b> - specifies whether to allow image updating without deleting<br /><br />
-    
+
     <u>For the 'file' type</u>:<br />Make sure, that target_path directory has 755 permissions<br />
     <b>'target_path'=>'...'</b> - relative (or full) path to file<br />
     <b>'file_name'=>'...'</b> - set new name for file use an original file name<br />
     <b>'max_file_size'=>'...'</b> - maximal image size allowed. Ex.: 1000, 10K, 1.2M or 1G<br />
     <b>'allow_downloading'=>''</b> - (true or false) allows downloading file in Details Mode<br /><br />
-    
+
     <u>For the 'checkbox' type</u>:<br />
     <b>'true_value'=>'...'</b> - set value for checked checkbox<br />
     <b>'false_value'=>'...'</b> - set value for unchecked checkbox<br /><br />
@@ -698,14 +691,12 @@ third letter (optional):
     <b>'multiple'=>...</b> - true or false (default) - if allow multirows listbox<br />
     <b>'multiple_size'=>...</b> - number of rows in multirows listbox (4 - default)<br /><br />
 
-
 <pre wrap><span class=green><b>// Fill enum type from the array (optional)</b></span>
 <span class=darkblue><b>$fill_from_array = array('0'=>'No', '1'=>'Yes', '2'=>'Don't know', '3'=>'My be'); </b></span></pre>
 
     <u>For the 'hidden' type</u>:<br />
     <b>'default'=>'...'</b> - default value for the field (in Add Mode). You may use NOW or CURRENT_TIMESTAMP.<br />
     <b>'value'=>'...'</b> - new value for the field (in Edit Mode)<br /><br />
-    
 
     <u>For the 'textarea' type</u>:<br />
     <b>'edit_type'=>'...'</b> - simple view - 'simple' or advanced wysiwyg editor - 'wysiwyg'<br />
@@ -718,7 +709,7 @@ third letter (optional):
 
     <u>For the 'validator' type</u>:<br />
     <b>'for_field'=>'...'</b> - name of the field for validation process<br />
-    <b>'validation_type'=>'password|email'</b> - type of validation field<br /><br />    
+    <b>'validation_type'=>'password|email'</b> - type of validation field<br /><br />
 
     <u>For the 'password' type</u>:<br />
     <b>'hide'=>''</b> - (true or false) show password or display ******<br />
@@ -726,7 +717,7 @@ third letter (optional):
     <b>'cryptography'=>''</b> - (true or false) is any cryptographic method used<br />
     <b>'cryptography_type'=>''</b> - (aes or md5) define cryptographic method<br />
     <b>'aes_cryptography'=>''</b> - password (key) for aes cryptographic function<br /><br />
-    
+
     <u>For the 'percent' type</u>:<br />
     <b>'decimal_places'=>'2'</b> - number of decimal places<br />
     <b>'dec_separator'=>'.'</b> - sign for separation of decimal digits<br /><br />
@@ -734,7 +725,7 @@ third letter (optional):
     <u>For the 'color' type</u>:<br />
     <b>'view_type'=>'dropdownlist'</b> - viewing type: dropdownlist<br />
     <b>'save_format'=>'hexcodes'</b> - type of stored data: hexcodes<br /><br />
-    
+
 <div style="width:676px;height:550px;overflow-x:scroll;background-color:#f3f3f3;border:1px solid #dadada;">
 <pre style="border:0px;margin:0px;display:block;width:5500px;"><span class=darkblue><b>$em_columns = array(
   'FieldName_1'  =>array('header'=>'Name_A', 'type'=>'textbox',    'req_type'=>'rt', 'width'=>'210px', 'title'=>'', 'readonly'=>'false', 'maxlength'=>'-1', 'default'=>'', 'unique'=>'false', 'unique_condition'=>'', 'visible'=>'true', 'on_js_event'=>''),
@@ -771,7 +762,6 @@ $dgrid->SetColumnsInEditMode($em_columns);</b></span></pre>
 $auto_column_in_edit_mode = false;
 $dgrid->SetAutoColumnsInEditMode($auto_column_in_edit_mode);</b></span></pre>
     <p><br /><br /></p>
-    
 
     <a name=Step_8._Foreign_Keys_Settings.></a>
     <h3><b>Step 8. Foreign Keys Settings. </b></h3>
@@ -788,7 +778,6 @@ $dgrid->SetAutoColumnsInEditMode($auto_column_in_edit_mode);</b></span></pre>
     <b>'order_type'=>'...'</b> - sorting type<br />
     <b>'on_js_event'=>'...'</b> - javascript code or js function on some event. Example: onClick(alert('Clicked!'))<br />
     <b>'show_count'=>''</b> - true or false, specifies whether to show number of foreign keys in dropdown list<br /><br />
-    
 
 <div style="width:676px;height:200px;overflow-x:scroll;background-color:#f3f3f3;border:1px solid #dadada;">
 <pre style="border:0px;margin:0px;display:block;width:2700px;"><span class=green><b>## *** set foreign keys for add/edit/details modes (if there are linked tables)
@@ -801,7 +790,6 @@ $foreign_keys = array(
 $dgrid->SetForeignKeysEdit($foreign_keys);</b></span></pre>
 </div>
     <p><br /><br /></p>
-    
 
     <a name=Step_9._Bind_the_DataGrid.></a>
     <h3><b>Step 9. Bind the DataGrid.</b></h3>
@@ -816,7 +804,6 @@ $dgrid->Bind(true);
 ob_end_flush();</b></span></pre>
     <p><br /><br /></p>
 
-    
     <a name=Not_documented_features_and_functions.></a>
     <h3 class="sub-title"><b>Non-Documented features and functions.</b></h3>
 
@@ -833,7 +820,7 @@ ob_end_flush();</b></span></pre>
         In view mode: defines aggregate function - SUM_TIME, SUM, AVG, MAX or MIN<pre wrap><span class=darkblue><b>summarizeFunction = 'SUM';</b></span></pre>
         In view mode: defines displaying alignment of controls ('' or 'grouped')<pre wrap><span class=darkblue><b>controlsDisplayingType = 'grouped';</b></span></pre>
         Defines using of escaping special characters in a string<pre wrap><span class=darkblue><b>allowRealEscape = true|false;</b></span></pre>
-        Defines week first day floating calendar (0 - sunday, default)<pre wrap><span class=darkblue><b>weekStartingDay = 1|2...7;</b></span></pre> 
+        Defines week first day floating calendar (0 - sunday, default)<pre wrap><span class=darkblue><b>weekStartingDay = 1|2...7;</b></span></pre>
         Defines initial state of filtering block - 'closed' or 'opened'<pre wrap><span class=darkblue><b>initFilteringState = '';</b></span></pre>
         Defines a separator for datetime fields (private property, allowed values: -,/,- or :)<pre wrap><span class=darkblue><b>dtSeparator = '-';</b></span></pre>
         Defines a maximum number of allowed records to be inserted(public)<pre wrap><span class=darkblue><b>maximumAllowedRecords = '100';</b></span></pre>
@@ -848,18 +835,18 @@ ob_end_flush();</b></span></pre>
         Defines whether to use new type of printing (default - no)<pre wrap><span class=darkblue><b>$printType = 'old|new';</b></span></pre>
         Defines whether to show buttons at the top of the page (default - false)<pre wrap><span class=darkblue><b>$drawTopButtons = true;</b></span></pre>
         <br /><br />
-        
+
     <a name=Methods></a>
     <h3><b>Methods</b></h3>
     <hr>
 
         Executes SQL query - use it after dataSource() method only (after the using dataSource() need to be recalled)
-    
+
 <pre wrap><span class=darkblue><b>ExecuteSql()</b></span>
 <span class=green>
 // Example:
 // Usage: PEAR: $dSet->fetchRow() and $dSet->numCols()
-//        PDO: $dSet->fetch() and $dSet->columnCount() 
+//        PDO: $dSet->fetch() and $dSet->columnCount()
 // $sql = 'SELECT * FROM Presidents WHERE CountryID = '.(int)$_GET['f_rid'];
 // $dSet = $dgrid->ExecuteSql($sql);
 // while($row = $dSet->fetchRow()){
@@ -868,7 +855,7 @@ ob_end_flush();</b></span></pre>
 // }</span></pre>
 
     Returns first column data from SELECT SQL - use it after DataSource() method only (using this method before bind() requires redefenition of DataSource())
-    
+
 <pre wrap><span class=darkblue><b>SelectSqlItem()</b></span>
 <span class=green>
 // Example:
@@ -918,20 +905,20 @@ ob_end_flush();</b></span></pre>
     Runs user's pre-defined function on_item_created event
     attributes in view/add/edit/details modes for customized work with field value.
     This function must be defined with 1 parameter, that will get fild's data.
-    Ex.: function function_name($field_value){ ... return $new_field_value;}    
+    Ex.: function function_name($field_value){ ... return $new_field_value;}
     <pre wrap><span class=darkblue><b>'on_item_created'=>'function_name'</b></span></pre>
     In view mode - defines aggregate function for certain field - SUM|AVG|MAX|MIN|SUM_TIME|DIFF|PERCENT_DIFF<br>
     Ex.: 'summarize_field_1' => '' and 'summarize_field_2' => '' - fields for aggregate functions: DIFF and PERCENT_DIFF <pre wrap><span class=darkblue><b>'summarize_function'=>'SUM'</b></span></pre>
     Defines whether to show this field on printing (default - true) <pre wrap><span class=darkblue><b>'show_on_print'=>true</b></span></pre>
-    Defines whether to show this field on exporting (default - true) <pre wrap><span class=darkblue><b>'show_on_export'=>true</b></span></pre> 
+    Defines whether to show this field on exporting (default - true) <pre wrap><span class=darkblue><b>'show_on_export'=>true</b></span></pre>
     Adds to column up/down arrows and allows to change row's order (true or false - default). Requires using of session_start(); <pre wrap><span class=darkblue><b>'movable'=>true;</b></span></pre>
     Defines table alias for filtering fields to prevent name overlapping <pre wrap><span class=darkblue><b>'table_alias'=>''</b></span></pre>
     Defines whether to allow using of NULLs for empty fields as default value <pre wrap><span class=darkblue><b>'default_null'=>'true'</b></span></pre>
     Defines a type of file storage - standard (link) or blob (for 'file' types). Additional parameters: <b>'blob_filetype'=>'', 'blob_filename'=>'', 'blob_filesize'=>''</b> - specifies additional fields (must be defined in database table). <pre wrap><span class=darkblue><b>'save_as'=>'blob'</b></span></pre>
     Defines a placeholder for text fields in Add/Edit modes and Filtering section<pre wrap><span class=darkblue><b>'placeholder'=>''</b></span></pre>
-    Defines a mode, where condition for foreign keys will work ('add' or 'edit') <pre wrap><span class=darkblue><b>'condition_mode'=>''</b></span></pre>    
-    
-    <br />    
+    Defines a mode, where condition for foreign keys will work ('add' or 'edit') <pre wrap><span class=darkblue><b>'condition_mode'=>''</b></span></pre>
+
+    <br />
     <a name=Features></a>
     <h3><b>Features</b></h3>
     <hr>
@@ -945,32 +932,31 @@ ob_end_flush();</b></span></pre>
        if(document.getElementById('ryyfirst_name').value =='x'){
           alert('Please check ...  X is invalid!!!');
           return false;
-       }  
+       }
        return true;
-   }	
+   }
 &lt;/script&gt;
 </b></span></pre>
 
     Allows reloading form in Edit mode
     <br><br>
 
-<div style="width:676px;height:45px;overflow-x:scroll;background-color:#f3f3f3;border:1px solid #dadada;">    
+<div style="width:676px;height:45px;overflow-x:scroll;background-color:#f3f3f3;border:1px solid #dadada;">
 <pre style="border:0px;margin:0px;display:block;width:1450px;"><span class=darkblue><b>'on_js_event'=>'onchange="_dgFormAction(\'\', \'\', \''.$dgrid->uniquePrefix.'\', \''.$dgrid->HTTP_URL.'\', \''.$_SERVER['QUERY_STRING'].'\', \'post\', \''.$_REQUEST[$dgrid->uniquePrefix.'mode'].'\')"'</b></span></pre>
 </div>
     <br>
     true - draw DataGrid on the screen<br>
     false - do all needed actions, but don't draw datagrid on the screen
-    
+
 <pre wrap><span class=darkblue><b>Bind(true|false)</b></span></pre>
     <p><br /><br /></p>
-
 
     <a name=Tricks.></a>
     <h3 class="sub-title"><b>Tricks.</b></h3>
     <br>
 
     1. Set default value, that disappears on focus:
-<div style="width:676px;height:48px;overflow-x:scroll;background-color:#f3f3f3;border:1px solid #dadada;">    
+<div style="width:676px;height:48px;overflow-x:scroll;background-color:#f3f3f3;border:1px solid #dadada;">
 <pre style="border:0px;margin:0px;display:block;width:2100px;"><span class=darkblue><b>'default'=>'http://www.website.com', 'on_js_event'=>'onBlur="if(this.value == \'\') this.value = \'http://www.website.com\'; this.style.color=\'#f68d6f\';" onClick="if(this.value==\'http://www.website.com\') this.value=\'\'; this.style.color=\'#000000\';"'
 </b></span></pre></div>
 
@@ -981,24 +967,20 @@ b) 'file_name'=>'img_'.((isset($_REQUEST['prfx_mode']) && ($_REQUEST['prfx_mode'
 </b></span></pre></div>
 
     <br>3. Passing parameters to Javascript function on 'on_js_event'=>'' for 'link' and 'label' fields:
-<pre wrap><span class=darkblue><b>'field_key'=>'', 'field_key_1'=>'', 'on_js_event'=>'my_finction({0},{1})' 
+<pre wrap><span class=darkblue><b>'field_key'=>'', 'field_key_1'=>'', 'on_js_event'=>'my_finction({0},{1})'
 </b></span></pre>
-
 
     <p><br /><br /></p>
 
-    
 	</div>
     </div>
     </div>
 
-    <div class="frame-box-holder"></div>		
-		
+    <div class="frame-box-holder"></div>
+
 </div>
 </div>
 </div>
-    
-    
-    
+
 </body>
 </html>
