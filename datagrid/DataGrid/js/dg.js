@@ -493,19 +493,30 @@ function _dgStopPropagation(e){
 function _dgDoSimpleRequest(unique_prefix, url, http_get_vars_part, postback_method){
    if(postback_method == 'post'){
       var res = '';
-      url = url.replace('?', '');
+      // If url is absolute (http://host/path?k=v) or path-qualified (/path?k=v),
+      // keep only the query-string portion. Otherwise the first split('&')
+      // pair becomes "http://host/pathKEY" = "VALUE" and the real first key
+      // (typically f_mode) is lost, so cancel/add/edit/etc. silently no-op.
+      var form_action = '';
+      var q_idx = url.indexOf('?');
+      if(q_idx !== -1){
+         form_action = url.substring(0, q_idx);
+         url = url.substring(q_idx + 1);
+      }
       var vars = url.split('&');
       var pair = '';
       for(var i=0;i<vars.length;i++){
          pair = vars[i].split('=');
+         if(pair[0] == '') continue;
          var input = document.createElement('input');
             input.setAttribute('type', 'hidden');
             input.setAttribute('name', pair[0]);
             input.setAttribute('id', pair[0]);
-            input.setAttribute('value', unescape(pair[1]));
+            input.setAttribute('value', unescape(pair[1] == null ? '' : pair[1]));
          document.getElementById(unique_prefix+'frmMain').appendChild(input);
       }
       if(http_get_vars_part != '') document.getElementById(unique_prefix+'frmMain').action = http_get_vars_part;
+      else if(form_action != '')   document.getElementById(unique_prefix+'frmMain').action = form_action;
       document.getElementById(unique_prefix+'frmMain').submit();
    }else{
       window.location.href = url;
