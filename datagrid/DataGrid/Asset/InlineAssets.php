@@ -18,13 +18,30 @@ class InlineAssets
     /** @var string Absolute filesystem path to the library root, with trailing slash. */
     private $directory;
 
+    /** @var string Optional fallback root (e.g. project public/datagrid/) checked when a file is not found under $directory. */
+    private $fallbackDirectory = '';
+
     /** @var string Newline string used for echoed HTML. */
     private $nl;
 
-    public function __construct($directory, $nl = "\n")
+    public function __construct($directory, $nl = "\n", $fallbackDirectory = '')
     {
         $this->directory = $directory;
+        $this->fallbackDirectory = $fallbackDirectory;
         $this->nl = $nl;
+    }
+
+    /** Resolve $relative_path against $directory, falling back to $fallbackDirectory when set. */
+    private function ResolveFile($relative_path)
+    {
+        $relative_path = ltrim($relative_path, '/');
+        $file = $this->directory . $relative_path;
+        if (is_file($file)) return $file;
+        if ($this->fallbackDirectory !== '') {
+            $fallback = rtrim(str_replace('\\', '/', $this->fallbackDirectory), '/') . '/' . $relative_path;
+            if (is_file($fallback)) return $fallback;
+        }
+        return '';
     }
 
     /**
@@ -36,8 +53,8 @@ class InlineAssets
      */
     public function Css($relative_path, $media = '', $ie_only = false)
     {
-        $file = $this->directory . ltrim($relative_path, '/');
-        if (!is_file($file)) return;
+        $file = $this->ResolveFile($relative_path);
+        if ($file === '') return;
         // Defensively neutralize any literal </style> inside the CSS so it doesn't close our wrapper tag.
         $css = str_replace('</style', '<\/style', file_get_contents($file));
         $media_attr = ($media !== '') ? ' media="'.$media.'"' : '';
@@ -54,8 +71,8 @@ class InlineAssets
      */
     public function Js($relative_path, $leading_nl = false)
     {
-        $file = $this->directory . ltrim($relative_path, '/');
-        if (!is_file($file)) return;
+        $file = $this->ResolveFile($relative_path);
+        if ($file === '') return;
         // Escape any literal </script> inside the JS so it doesn't prematurely close our wrapper tag.
         $js = str_replace('</script', '<\/script', file_get_contents($file));
         echo ($leading_nl ? "\n" : '').'<script type="text/javascript">'."\n".$js."\n".'</script>'.$this->nl;
