@@ -193,7 +193,7 @@ class Code22Example extends BaseController
     ##  ***      "barchart" : number format in SELECT SQL must be equal with number format in max_value
     /// $fill_from_array = array("0"=>"Banned", "1"=>"Active", "2"=>"Closed", "3"=>"Removed"); /* as "value"=>"option" */
      $vm_columns = array(
-        "name"       =>array("header"=>"Name",        "type"=>"label", "header_tooltip"=>"Name of President for specific country", "header_tooltip_type"=>"floating", "align"=>"left",  "wrap"=>"wrap",   "text_length"=>"20", "case"=>"normal"),
+        "name"       =>array("header"=>"Name",        "type"=>"label", "header_tooltip"=>"Name of President for specific country", "header_tooltip_type"=>"floating", "align"=>"left",  "wrap"=>"wrap",   "text_length"=>"20", "case"=>"normal", "class"=>"my-name-cell"),
         "birth_date" =>array("header"=>"Birth Date",  "type"=>"label", "align"=>"center",  "wrap"=>"nowrap", "text_length"=>"-1", "case"=>"normal"),
         "status"     =>array("header"=>"Status",      "type"=>"label", "align"=>"center",  "wrap"=>"nowrap", "text_length"=>"30", "case"=>"normal"),
         "rating"     =>array("header"=>"Rating",      "type"=>"label", "align"=>"center",  "wrap"=>"nowrap", "text_length"=>"-1", "case"=>"normal", "movable"=>"true"),
@@ -232,11 +232,11 @@ class Code22Example extends BaseController
     /// $fill_from_array = array("0"=>"No", "1"=>"Yes", "2"=>"Don't know", "3"=>"My be"); /* as "value"=>"option" */
 
         $em_columns = array(
-            "name"        =>array("header"=>"Name",       "type"=>"textbox",  "width"=>"140px", "req_type"=>"rt", "title"=>"Name"),
+            "name"        =>array("header"=>"Name",       "type"=>"textbox",  "width"=>"140px", "req_type"=>"rt", "title"=>"Name", "class"=>"my-name-input"),
             "birth_date"  =>array("header"=>"Birth Date", "type"=>"date",     "req_type"=>"rt", "width"=>"80px", "title"=>"", "readonly"=>"false", "maxlength"=>"-1", "default"=>"", "unique"=>"false", "unique_condition"=>"", "visible"=>"true", "on_js_event"=>"", "calendar_type"=>"floating"),
             "status"      =>array("header"=>"Status",     "type"=>"enum",     "req_type"=>"st", "width"=>"210px", "title"=>"Status", "readonly"=>false, "maxlength"=>"-1", "default"=>"", "unique"=>false, "unique_condition"=>"", "on_js_event"=>"", "source"=>"self", "view_type"=>"dropdownlist"),
             "rating"      =>array("header"=>"Rating",     "type"=>"textbox",  "width"=>"100px", "req_type"=>"ri", "maxlength"=>"3", "title"=>"Rating"),
-            "country_id"  =>array("header"=>"Country",    "type"=>"textbox",  "width"=>"160px", "req_type"=>"ri", "title"=>"Country", "readonly"=>false),
+            "country_id"  =>array("header"=>"Country",    "type"=>"textbox",  "width"=>"160px", "req_type"=>"ri", "title"=>"Country", "readonly"=>false, "class"=>"my-country-select"),
             "work_phone"  =>array("header"=>"",           "type"=>"hidden",   "req_type"=>"st", "default"=>"", "value"=>"", "unique"=>"false", "visible"=>"false"),
         );
         $dgrid->SetColumnsInEditMode($em_columns);

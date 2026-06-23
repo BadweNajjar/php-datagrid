@@ -4240,7 +4240,7 @@ class DataGrid
                     $ff_key  = $this->arrForeignKeys[$fk_field_name]['field_key'];
                     if(preg_match('/ as /i', strtolower($ff_name))) $ff_name = substr($ff_name, strpos(strtolower($ff_name), ' as ')+4);
                     if($row[$ff_key] === $kFieldValue){
-                        return $this->nbsp.$fp_pre_addition.$row[$ff_name].$fp_post_addition.$this->nbsp;
+                        return $this->AppendUserClass($fk_field_name, $this->nbsp.$fp_pre_addition.$row[$ff_name].$fp_post_addition.$this->nbsp, 'edit');
                     }
                 }
                 return '';
@@ -4253,11 +4253,11 @@ class DataGrid
                         $kFieldValue = str_replace(['"', "'"], ['&quot;', '&#039;'], $kFieldValue);
                     }
                 }
-                return '<input class="'.$this->cssClass.'_dg_textbox" type="text" title="'.htmlspecialchars($this->GetFieldTitle($fk_field_name)).'" id="'.$this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix.'" name="'.$this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix.'" value="'.$kFieldValue.'" '.$disabled.' '.$on_js_event.' />';
+                return $this->AppendUserClass($fk_field_name, '<input class="'.$this->cssClass.'_dg_textbox" type="text" title="'.htmlspecialchars($this->GetFieldTitle($fk_field_name)).'" id="'.$this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix.'" name="'.$this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix.'" value="'.$kFieldValue.'" '.$disabled.' '.$on_js_event.' />', 'edit');
             }elseif($view_type == 'radiobutton'){ //'view_type'=>'radiobutton'
                 if($kFieldValue == '-1') $kFieldValue = $this->GetFieldProperty($fk_field_name, 'default');
 				if(empty($dSet)) $dSet = [];
-                return $this->DrawRadioButtons($this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix, $fk_field_name, $dSet, $kFieldValue, 'field_key', 'field_name', $disabled, $on_js_event, $fp_elements_alignment);
+                return $this->AppendUserClass($fk_field_name, $this->DrawRadioButtons($this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix, $fk_field_name, $dSet, $kFieldValue, 'field_key', 'field_name', $disabled, $on_js_event, $fp_elements_alignment), 'edit');
             }else { //'view_type'=>'dropdownlist' - default
                 $req_field_name = $this->GetVariable($this->GetFieldRequiredType($fk_field_name).$fk_field_name, false, 'post');
                 if($req_mode == 'add'){
@@ -4276,14 +4276,14 @@ class DataGrid
                     }else $new_field_value = $fk_field_value;
                 }
                 if(empty($dSet)) $dSet = [];
-				return $fp_pre_addition.$this->DrawDropDownList($this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix, '', $dSet, $new_field_value, $fk_field_name, 'field_key', 'field_name', $disabled, $on_js_event).$fp_post_addition;
+				return $this->AppendUserClass($fk_field_name, $fp_pre_addition.$this->DrawDropDownList($this->GetFieldRequiredType($fk_field_name).$fk_field_name.$multirow_postfix, '', $dSet, $new_field_value, $fk_field_name, 'field_key', 'field_name', $disabled, $on_js_event).$fp_post_addition, 'edit');
             }
         }else{
             if(!isset($dSet->message) || $dSet->message == ''){
                 $row = $this->dgFetchRow($dSet);
                 $ff_name = $this->arrForeignKeys[$fk_field_name]['field_name'];
                 if(preg_match('/ as /i', strtolower($ff_name))) $ff_name = substr($ff_name, strpos(strtolower($ff_name), ' as ')+4);
-                return $this->nbsp.$fp_pre_addition.(isset($row[$ff_name]) ? $row[$ff_name] : '').$fp_post_addition.$this->nbsp;
+                return $this->AppendUserClass($fk_field_name, $this->nbsp.$fp_pre_addition.(isset($row[$ff_name]) ? $row[$ff_name] : '').$fp_post_addition.$this->nbsp, 'view');
             }else{
                 if(isset($dSet->message)){ echo $dSet->message; }
                 if(isset($dSet->userinfo)){ echo $dSet->userinfo; }
@@ -5784,6 +5784,7 @@ class DataGrid
         if($this->convertOutput){
             $output = mb_convert_encoding($output, $this->convertTo, $this->convertFrom);
         }
+        $output = $this->AppendUserClass($field_name, $output, $mode);
         return $fp_pre_addition.$output.$fp_post_addition;
     }
 
@@ -7201,6 +7202,45 @@ class DataGrid
             }
         }
         return false;
+    }
+
+    /**
+     * Append the developer-defined "class" field property to the rendered HTML.
+     * Looks up the `class` property on the field (view/edit/details/filter mode)
+     * and merges it into the first existing class="..." attribute of $html. If
+     * the html has no class attribute, the class is added to the first tag, and
+     * as a last resort the html is wrapped in a span.
+     *
+     * @param string $field_name
+     * @param string $html
+     * @param string $mode
+     */
+    /** @internal */
+    public function AppendUserClass($field_name, $html, $mode = ''){
+        if($html === '' || $html === null) return $html;
+        if($mode === '') $mode = $this->mode;
+        $user_class = $this->GetFieldProperty($field_name, 'class', $mode, 'normal');
+        if(!is_string($user_class) || trim($user_class) === '') return $html;
+        // strip characters that could break out of an HTML attribute
+        $user_class = trim(preg_replace('/["\'<>]/', '', $user_class));
+        if($user_class === '') return $html;
+        if(preg_match('/\sclass\s*=\s*"[^"]*"/', $html)){
+            return preg_replace(
+                '/(\sclass\s*=\s*")([^"]*)(")/',
+                '$1$2 '.$user_class.'$3',
+                $html,
+                1
+            );
+        }
+        if(preg_match('/^\s*<[a-zA-Z][a-zA-Z0-9]*/', $html)){
+            return preg_replace(
+                '/^(\s*<[a-zA-Z][a-zA-Z0-9]*)/',
+                '$1 class="'.$user_class.'"',
+                $html,
+                1
+            );
+        }
+        return '<span class="'.$user_class.'">'.$html.'</span>';
     }
 
     /**
